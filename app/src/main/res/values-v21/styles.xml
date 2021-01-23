@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.PoGoDex" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/classic_red</item>
+        <item name="colorPrimaryVariant">@color/classic_red</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="titleTextColor">@color/white</item>
+        <!-- Customize your theme here. -->
+        <item name="android:textColorHint">#FFA0A0</item>
+    </style>
+
+    <style name="Theme.AppCompat.NoActionBar." parent="@style/Theme.Design.Light.NoActionBar">
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+    </style>
+
+
+</resources>

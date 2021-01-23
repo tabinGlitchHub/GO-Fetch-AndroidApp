@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="260dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/curve_corner_card"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="Sort by"
+        android:textColor="@color/classic_red"
+        android:textSize="20dp" />
+
+    <RadioGroup
+        android:id="@+id/radGrpSort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <RadioButton
+            android:id="@+id/radAlphBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:buttonTint="@color/classic_red"
+            android:checked="true"
+            android:layoutDirection="rtl"
+            android:paddingRight="50dp"
+            android:text="Alphabet (Name)"
+            android:textAlignment="textStart"
+            tools:ignore="RtlCompat"
+            android:onClick="checkButton"/>
+
+        <RadioButton
+            android:id="@+id/radIdBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/classic_red"
+            android:layoutDirection="rtl"
+            android:paddingRight="75dp"
+            android:text="Number(#ID)"
+            android:textAlignment="textStart"
+            tools:ignore="RtlCompat"
+            android:onClick="checkButton"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ascendBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/curve_corner_button_left"
+            android:text="Ascending"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/dscendBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/curve_corner_button_right"
+            android:text="Descending"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

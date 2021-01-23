@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".FavoriteMonActivity">
+
+    <RelativeLayout
+        android:id="@+id/parentRelaTopFav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarFav"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="start"
+            android:background="@color/classic_red"
+            android:elevation="4dp">
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbarFav">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favMonsRecyclerV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:id="@+id/emptyWarningTxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="No Favorites added yet.."
+                android:textSize="15dp"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+<!--        <com.google.android.material.navigation.NavigationView-->
+<!--            android:id="@+id/navLay"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="start"-->
+<!--            app:headerLayout="@layout/nav_header"-->
+<!--            app:menu="@menu/drawer_menu" />-->
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

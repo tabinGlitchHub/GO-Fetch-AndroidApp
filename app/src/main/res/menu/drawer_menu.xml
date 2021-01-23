@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Trainer Info">
+        <menu>
+            <item
+                android:id="@+id/trainerName"
+                android:title="First Name" />
+            <item
+                android:id="@+id/trainerLevel"
+                android:title="Level" />
+            <item
+                android:id="@+id/caughtDex"
+                android:title="Pokédex" />
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/profileOpt"
+            android:title="GO Dex" />
+        <item
+            android:id="@+id/movesOpt"
+            android:title="Move Dex" />
+        <item
+            android:id="@+id/typeChartOpt"
+            android:title="Type Dex" />
+        <item
+            android:id="@+id/dittoChartOpt"
+            android:title="Known Dittos" />
+        <item
+            android:id="@+id/settingsOpt"
+            android:title="Settings" />
+    </group>
+
+</menu>
