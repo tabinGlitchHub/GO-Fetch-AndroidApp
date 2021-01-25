@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
         shimmerFrameLayout = findViewById(R.id.shimmer_layout);
 
+        //start shimmer
         shimmerFrameLayout.startShimmer();
 
         setSupportActionBar(toolbar);
