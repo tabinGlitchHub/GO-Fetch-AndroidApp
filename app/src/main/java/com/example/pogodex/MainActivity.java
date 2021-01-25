@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 
 import android.view.Menu;
@@ -29,6 +30,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private Button radioButtonSelected;
     private RadioGroup radioGroupOfSort;
     private RadioGroup radioGroupFilter;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     private final String[] legendIdList = {"144", "145", "146", "150", "151", "243", "244", "245", "249", "250",
             "251", "377", "378", "379", "380", "381", "382", "383", "384", "385", "386", "480", "481", "482", "483",
@@ -90,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
         fabCh2 = findViewById(R.id.floatChild2);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
+        shimmerFrameLayout = findViewById(R.id.shimmer_layout);
+
+        shimmerFrameLayout.startShimmer();
 
         setSupportActionBar(toolbar);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -368,23 +374,27 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<PokemonData>>() {
             @Override
             public void onResponse(Call<List<PokemonData>> call, Response<List<PokemonData>> response) {
-                pkmnList = new ArrayList<>(response.body());
+                if (response != null) {
+                    pkmnList = new ArrayList<>(response.body());
 
-                //Copy Original JSON array to backup List
-                deepCopyArrList(pkmnList, pkmnListOG);
+                    //Copy Original JSON array to backup List
+                    deepCopyArrList(pkmnList, pkmnListOG);
 
-                //Filter to display only Normal forms
-                for (int i = 0; i < pkmnList.size(); ) {
-                    if (pkmnList.get(i).get_pokemonForm().equals("Normal") || pkmnList.get(i).get_pokemonForm().equals("Incarnate")
-                            || pkmnList.get(i).get_pokemonForm().equals("Ordinary") || pkmnList.get(i).get_pokemonForm().equals("Aria")
-                            || pkmnList.get(i).get_pokemonForm().equals("Galarian") || pkmnList.get(i).get_pokemonForm().equals("Altered")
-                            || pkmnList.get(i).get_pokemonForm().equals("Land")) {
-                        i++;
-                    } else {
-                        pkmnList.remove(i);
+                    //Filter to display only Normal forms
+                    for (int i = 0; i < pkmnList.size(); ) {
+                        if (pkmnList.get(i).get_pokemonForm().equals("Normal") || pkmnList.get(i).get_pokemonForm().equals("Incarnate")
+                                || pkmnList.get(i).get_pokemonForm().equals("Ordinary") || pkmnList.get(i).get_pokemonForm().equals("Aria")
+                                || pkmnList.get(i).get_pokemonForm().equals("Galarian") || pkmnList.get(i).get_pokemonForm().equals("Altered")
+                                || pkmnList.get(i).get_pokemonForm().equals("Land")) {
+                            i++;
+                        } else {
+                            pkmnList.remove(i);
+                        }
                     }
+                    deepCopyArrList(pkmnList, pkmnListTempCopy);
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                 }
-                deepCopyArrList(pkmnList, pkmnListTempCopy);
                 //Assign to Adapter
                 pkmnHolder = new PokemonCardDataHolder(MainActivity.this, pkmnList);
                 recyclerView.setAdapter(pkmnHolder);

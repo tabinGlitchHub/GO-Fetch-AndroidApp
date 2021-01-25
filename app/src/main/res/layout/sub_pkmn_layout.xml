@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -9,9 +10,8 @@
         android:layout_width="130dp"
         android:layout_height="175dp"
         android:layout_margin="5dp"
-        app:cardCornerRadius="7dp"
         android:elevation="10dp"
-        app:cardBackgroundColor="@color/elecBG">
+        app:cardCornerRadius="7dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -22,9 +22,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pkmnImage"
-                android:layout_toRightOf="@id/pkmnID"
-                android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/pkmnID"
                 android:text="Pikachu"
                 android:textColor="#333333"
                 android:textSize="12sp" />
@@ -34,8 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pkmnImage"
-                android:layout_marginEnd="5dp"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
                 android:layout_toEndOf="@+id/tagSign"
                 android:text="25"
                 android:textColor="#757575"
@@ -46,8 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pkmnImage"
-                android:layout_marginStart="10dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
                 android:text="#"
                 android:textColor="#757575"
                 android:textSize="12sp" />
@@ -55,14 +55,14 @@
 
             <ImageView
                 android:id="@+id/pkmnBackG"
-                android:src="@mipmap/ic_sample_bg_foreground"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:src="@mipmap/ic_sample_bg_foreground" />
 
 
             <ImageView
@@ -70,36 +70,36 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/ic_pokemon" />
 
             <ImageView
                 android:id="@+id/type1Icon"
-                android:src="@mipmap/ic_sample_type1_foreground"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp" />
-
-            <ImageView
-                android:id="@+id/type2Icon"
-                android:src="@mipmap/ic_sample_type1_foreground"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/type1Icon" />
+                android:src="@mipmap/ic_sample_type1_foreground" />
+
+            <ImageView
+                android:id="@+id/type2Icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/type1Icon"
+                android:src="@mipmap/ic_sample_type1_foreground" />
 
             <Button
                 android:id="@+id/favoriteBTN"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:background="@mipmap/ic_fav_pb_btn_deselected_foreground"
                 android:layout_marginStart="80dp"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:background="@mipmap/ic_fav_pb_btn_deselected_foreground" />
 
         </RelativeLayout>
 

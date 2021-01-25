@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class LaunchActivity extends AppCompatActivity {
 
     //Wait time for loading MainActivity after Splash Screen
-    private static int launchMainIn = 2000;
+    private static final int launchMainIn = 2000;
 
     Animation toRight, toLeft;
     ImageView gLogo, oLogo;

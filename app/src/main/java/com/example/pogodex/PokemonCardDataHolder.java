@@ -1,6 +1,7 @@
 package com.example.pogodex;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.facebook.shimmer.Shimmer;
+import com.facebook.shimmer.ShimmerDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,8 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
         pokemonDataListCopy = new ArrayList<>(pokemonDataList);
     }
 
-    public PokemonCardDataHolder() {}
+    public PokemonCardDataHolder() {
+    }
 
     public ArrayList<PokemonData> getFavoritePkmnList() {
         return favoritePkmnList;
@@ -129,9 +133,9 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
         }
     };
 
-    private boolean containmentCheck(String toThis){
+    private boolean containmentCheck(String toThis) {
         for (int i = 0; i < favoritePkmnList.size(); i++) {
-            if(favoritePkmnList.get(i).get_pokemonID().equals(toThis)){
+            if (favoritePkmnList.get(i).get_pokemonID().equals(toThis)) {
                 return true;
             }
         }
