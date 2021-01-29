@@ -61,11 +61,31 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup radioGroupOfSort;
     private RadioGroup radioGroupFilter;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private boolean legendFilterApplied = false;
+    private boolean shinyFilterApplied = false;
 
-    private final String[] legendIdList = {"144", "145", "146", "150", "151", "243", "244", "245", "249", "250",
-            "251", "377", "378", "379", "380", "381", "382", "383", "384", "385", "386", "480", "481", "482", "483",
-            "484", "485", "486", "487", "488", "489", "490", "491", "492", "493", "638", "639", "640", "643", "644",
-            "645", "646", "647", "648", "649", "716", "717", "718", "808", "809"};
+    //indexed list for Filter purpose.
+    private final String[] legendIdList = {"144", "145", "146", "150", "151", "243", "244", "245",
+            "249", "250", "251", "377", "378", "379", "380", "381", "382", "383", "384", "385",
+            "386", "480", "481", "482", "483", "484", "485", "486", "487", "488", "489", "490",
+            "491", "492", "493", "638", "639", "640", "643", "644", "645", "646", "647", "648",
+            "649", "716", "717", "718", "808", "809"};
+    private final String[] nonShinyList = {"21", "22", "46", "47", "106", "107", "132", "143", "151",
+            "163", "164", "167", "168", "187", "188", "189", "203", "214", "218", "219", "222", "223",
+            "224", "226", "231", "232", "235", "236", "237", "251", "283", "284", "285", "286", "292",
+            "293", "294", "295", "299", "316", "317", "322", "323", "324", "331", "332", "341", "342",
+            "352", "357", "358", "363", "364", "365", "369", "385", "396", "397", "398", "399", "400",
+            "408", "409", "410", "411", "415", "416", "417", "420", "421", "422", "423", "433", "434",
+            "435", "441", "446", "455", "456", "457", "458", "476", "479", "480", "481", "482", "483",
+            "484", "486", "489", "490", "492", "493", "494", "498", "499", "500", "501", "502", "503",
+            "509", "510", "511", "512", "513", "514", "515", "516", "517", "518", "522", "523", "529",
+            "530", "531"};
+    private final String[] shinyList = {"532", "533", "534", "557", "558", "562", "563", "572", "573",
+            "597", "598", "599", "600", "601", "613", "614", "627", "628", "631", "632", "633", "634",
+            "635", "638", "639", "640", "649", "808", "809"};
+    private final String[] shinyLegendsList = {"144", "145", "146", "150", "243", "244", "245", "249",
+            "250", "377", "378", "379", "380", "381", "382", "383", "384", "385", "485", "487", "488",
+            "491", "638", "639", "640", "649", "808", "809"};
 
     //Will contain Filtered list without forms
     ArrayList<PokemonData> pkmnList = new ArrayList<>();
@@ -172,8 +192,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO complete the filter features
-        //TODO complete 3dot ooptions
+        //TODO complete 3dot options
         //TODO improve design and UI
 
     }
@@ -215,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 pkmnHolder.notifyDataSetChanged();
                 dialog.dismiss();
+                Toast.makeText(MainActivity.this, "Sorted in Ascending order!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -241,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 pkmnHolder.notifyDataSetChanged();
                 dialog.dismiss();
+                Toast.makeText(MainActivity.this, "Sorted in Descending order!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -265,21 +286,89 @@ public class MainActivity extends AppCompatActivity {
                 RadioButton radioButtonSelected = popUpViewFilt.findViewById(radioId);
 
                 if (radioId == R.id.radLegBtn) {
-                    //Remove everything that's not in legendList
-                    for (int i = 0; i < legendIdList.length; ) {
-                        if (legendIdList[i].equals(pkmnList.get(i).get_pokemonID())) {
-                            i++;
-                        } else {
-                            pkmnList.remove(i);
+                    //Remove everything that's not in legendList and haven't been filtered for shinies
+                    if (!shinyFilterApplied) {
+                        for (int i = 0; i < legendIdList.length; ) {
+                            if (legendIdList[i].equals(pkmnList.get(i).get_pokemonID())) {
+                                i++;
+                            } else {
+                                pkmnList.remove(i);
+                            }
                         }
-                    }
-                    //secondary loop to clear everything that's left
-                    for (int i = 0; i < pkmnList.size(); ) {
-                        if (i >= legendIdList.length) pkmnList.remove(i);
-                        else i++;
-                    }
+                        //secondary loop to clear everything that's left
+                        for (int i = 0; i < pkmnList.size(); ) {
+                            if (i >= legendIdList.length) pkmnList.remove(i);
+                            else i++;
+                        }
+                    } else
+                        //if legend filter applied after shiny filter applied.
+                        if (shinyFilterApplied) {
+                            for (int i = 0; i < shinyLegendsList.length; ) {
+                                //remove everything that doesn not match the shinylegendlist,
+                                // #385 was an exception as it is not a shiny hence didn't exist,
+                                // easy way out was to just mention it in 'OR' and move on.
+                                if (shinyLegendsList[i].equals(pkmnList.get(i).get_pokemonID())
+                                        || shinyLegendsList[i].equalsIgnoreCase("385")) {
+                                    i++;
+                                } else {
+                                    pkmnList.remove(i);
+                                }
+                            }
+                        }
                     pkmnHolder.notifyDataSetChanged();
                     dialog.dismiss();
+                    legendFilterApplied = true;
+                    Toast.makeText(MainActivity.this, "Showing only Legendaries!", Toast.LENGTH_SHORT).show();
+                }
+
+                if (radioId == R.id.radShinBtn) {
+                    //if no filter (legend) has been applied yet.
+                    if (!legendFilterApplied) {
+                        //since the list of shinies is very dispersed and irregualar after #532
+                        //i split the list into non shinies and shinies, for the sake of ease, since
+                        //there are more shinies in list before 532 than there are non shinies and
+                        //more non shinies than shinies after 532. 2 for loops had to be apploed for this.
+
+                        //this loop applied to remove the nonshinies and keep everything else.
+                        int j = 0;
+                        for (int i = 0; j < nonShinyList.length; ) {
+                            if (nonShinyList[j].equals(pkmnList.get(i).get_pokemonID())) {
+                                j++;
+                                pkmnList.remove(i);
+                            } else {
+                                i++;
+                            }
+                        }
+                        //this loop applied to do the same but in a different way and after element 422
+                        //in pkmnList since that's where the loop concluded in previous loop and happens
+                        //to contain #532.
+                        int k = 0;
+                        for (int i = 422; k < shinyList.length; ) {
+                            if ((shinyList[k].equals(pkmnList.get(i).get_pokemonID()))) {
+                                i++;
+                                k++;
+                            } else {
+                                pkmnList.remove(i);
+                            }
+                        }
+                    } else
+                        //if legend filter has been applied before shiny filter.
+                        if (legendFilterApplied) {
+                            //this loop applied to remove the nonshinies and keep everything else.
+                            int j = 0;
+                            for (int i = 0; j < shinyLegendsList.length; ) {
+                                if (shinyLegendsList[j].equals(pkmnList.get(i).get_pokemonID())) {
+                                    j++;
+                                    i++;
+                                } else {
+                                    pkmnList.remove(i);
+                                }
+                            }
+                        }
+                    pkmnHolder.notifyDataSetChanged();
+                    dialog.dismiss();
+                    shinyFilterApplied = true;
+                    Toast.makeText(MainActivity.this, "Showing only Shinies!", Toast.LENGTH_SHORT).show();
                 }
 
                 if (radioId == R.id.radNormalBtn) {
@@ -288,6 +377,9 @@ public class MainActivity extends AppCompatActivity {
 
                     pkmnHolder.notifyDataSetChanged();
                     dialog.dismiss();
+                    legendFilterApplied = false;
+                    shinyFilterApplied = false;
+                    Toast.makeText(MainActivity.this, "Back to Normal.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -385,19 +477,20 @@ public class MainActivity extends AppCompatActivity {
                         if (pkmnList.get(i).get_pokemonForm().equals("Normal") || pkmnList.get(i).get_pokemonForm().equals("Incarnate")
                                 || pkmnList.get(i).get_pokemonForm().equals("Ordinary") || pkmnList.get(i).get_pokemonForm().equals("Aria")
                                 || pkmnList.get(i).get_pokemonForm().equals("Galarian") || pkmnList.get(i).get_pokemonForm().equals("Altered")
-                                || pkmnList.get(i).get_pokemonForm().equals("Land")) {
+                                || pkmnList.get(i).get_pokemonForm().equals("Land") || pkmnList.get(i).get_pokemonForm().equals("Overcast")
+                                || pkmnList.get(i).get_pokemonForm().equals("East_sea")) {
                             i++;
                         } else {
                             pkmnList.remove(i);
                         }
                     }
-                    deepCopyArrList(pkmnList, pkmnListTempCopy);
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                 }
                 //Assign to Adapter
                 pkmnHolder = new PokemonCardDataHolder(MainActivity.this, pkmnList);
                 recyclerView.setAdapter(pkmnHolder);
+                deepCopyArrList(pkmnList, pkmnListTempCopy);
             }
 
             @Override

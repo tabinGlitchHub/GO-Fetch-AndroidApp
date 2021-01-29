@@ -54,25 +54,19 @@
             tools:ignore="RtlCompat"
             android:onClick="checkButton2"/>
 
-        <RadioButton
-            android:id="@+id/radNestBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:buttonTint="@color/classic_red"
-            android:layoutDirection="rtl"
-            android:paddingRight="106dp"
-            android:text="Nesting Mons"
-            android:textAlignment="textStart"
-            tools:ignore="RtlCompat"
-            android:onClick="checkButton2"/>
+        <TextView
+            android:layout_width="240dp"
+            android:layout_height="1dp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#6F9F9F9F"/>
+
         <RadioButton
             android:id="@+id/radNormalBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:buttonTint="@color/classic_red"
             android:layoutDirection="rtl"
             android:paddingRight="97dp"
@@ -86,7 +80,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
