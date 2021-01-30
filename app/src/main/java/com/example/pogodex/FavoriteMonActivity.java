@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class FavoriteMonActivity extends AppCompatActivity {
@@ -30,7 +31,6 @@ public class FavoriteMonActivity extends AppCompatActivity {
         Intent intent = getIntent();
         favListedMons = (ArrayList<PokemonData>) intent.getSerializableExtra("key");
 
-        System.out.println(favListedMons.size());
 
         if(favListedMons.size() == 0){
             emptyWarnTxt.setVisibility(View.VISIBLE);

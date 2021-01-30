@@ -1,14 +1,18 @@
 package com.example.pogodex;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,14 +23,16 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import static com.example.pogodex.PokemonCardDataHolder.favoritePkmnList;
+
 public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCardDataHolder.ViewHolder> {
 
-    private ArrayList<PokemonData> favpkmnList;
+    ArrayList<PokemonData> favpkmnList;
     private Context context;
 
-    FavPokemonCardDataHolder(Context context , ArrayList<PokemonData> favpkmn){
+    FavPokemonCardDataHolder(Context context, ArrayList<PokemonData> favpkmn) {
         this.context = context;
-        this.favpkmnList = favpkmn;
+        this.favpkmnList = favoritePkmnList;
     }
 
     @NonNull
@@ -37,8 +43,13 @@ public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCar
         return holder;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.favBtn.setTag(position);
+        int colorid = favpkmnList.get(position).get_background();
+        Drawable color = holder.parent.getContext().getDrawable(colorid);
+        holder.parent.setBackground(color);
         holder.pokemonName.setText(favpkmnList.get(position).get_pokemonName());
         holder.pokemonID.setText(favpkmnList.get(position).get_pokemonID());
 
@@ -77,7 +88,8 @@ public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCar
         private ImageView pokemonBG;
         private ImageView typeOne;
         private ImageView typeTwo;
-        private CardView parent;
+        private RelativeLayout parent;
+        private Button favBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +101,20 @@ public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCar
             typeOne = itemView.findViewById(R.id.type1Icon);
             typeTwo = itemView.findViewById(R.id.type2Icon);
             parent = itemView.findViewById(R.id.pkmnCard);
+            favBtn = itemView.findViewById(R.id.favoriteBTN);
+
+            favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_selected_foreground);
+
+            favBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = (int) favBtn.getTag();
+                    PokemonData pkData = favpkmnList.get(position);
+                    pkData.setFavorite(false);
+                    favpkmnList.remove(pkData);
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 }

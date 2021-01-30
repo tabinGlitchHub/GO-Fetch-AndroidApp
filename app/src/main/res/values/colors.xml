@@ -5,23 +5,4 @@
     <color name="white">#FFFFFFFF</color>
     <color name="ActionBarTitleLight">#FFFFFF</color>
 
-    <color name="bugBG">#DFFF8A</color>
-    <color name="darkBG">#0F2742</color>
-    <color name="dragBG">#5e61ff</color>
-    <color name="elecBG">#FFFD85</color>
-    <color name="fairyBG">#F1B2FF</color>
-    <color name="fightBG">#FF8098</color>
-    <color name="fireBG">#FFB185</color>
-    <color name="flyBG">#c1e5f5</color>
-    <color name="ghostBG">#887DCD</color>
-    <color name="grassBG">#A7FFAB</color>
-    <color name="groundBG">#C59F2D</color>
-    <color name="iceBG">#C2FBFA</color>
-    <color name="normBG">#edf0d3</color>
-    <color name="poisBG">#943BF8</color>
-    <color name="psyBG">#F86ED5</color>
-    <color name="rockBG">#7a5f18</color>
-    <color name="steelBG">#97b3c2</color>
-    <color name="waterBG">#86C6F8</color>
-
 </resources>

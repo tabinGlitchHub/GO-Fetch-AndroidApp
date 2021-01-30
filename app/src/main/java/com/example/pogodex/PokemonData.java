@@ -36,7 +36,6 @@ public class PokemonData implements Serializable {
 
     private boolean isFavorite;
 
-
     private String[] typeList = {
             "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_bug.png",
             "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dark.png",
@@ -86,9 +85,12 @@ public class PokemonData implements Serializable {
     private String pkmnSprite = new String();
 
     private Integer[] colorsForBG = {
-            R.color.bugBG, R.color.darkBG, R.color.dragBG, R.color.elecBG, R.color.fairyBG,R.color.fightBG,
-            R.color.fireBG, R.color.flyBG, R.color.ghostBG, R.color.grassBG, R.color.groundBG, R.color.iceBG,
-            R.color.normBG, R.color.poisBG, R.color.psyBG, R.color.rockBG, R.color.steelBG, R.color.waterBG
+            R.drawable.card_gradient_bug, R.drawable.card_gradient_dark, R.drawable.card_gradient_dragon,
+            R.drawable.card_gradient_electric, R.drawable.card_gradient_fairy, R.drawable.card_gradient_fightng,
+            R.drawable.card_gradient_fire, R.drawable.card_gradient_flyng, R.drawable.card_gradient_ghost,
+            R.drawable.card_gradient_grass, R.drawable.card_gradient_ground, R.drawable.card_gradient_ice,
+            R.drawable.card_gradient_normal, R.drawable.card_gradient_poison, R.drawable.card_gradient_psychic,
+            R.drawable.card_gradient_rock, R.drawable.card_gradient_steel, R.drawable.card_gradient_water
     };
 
     public String get_pokemonImage(){

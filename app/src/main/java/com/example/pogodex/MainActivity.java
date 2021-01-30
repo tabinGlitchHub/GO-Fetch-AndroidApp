@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.opengl.Visibility;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.Menu;
@@ -20,11 +21,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -58,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private AlertDialog.Builder dialogBuilder;
     private Button radioButtonSelected;
+    private Button favoBTN;
     private RadioGroup radioGroupOfSort;
     private RadioGroup radioGroupFilter;
     private ShimmerFrameLayout shimmerFrameLayout;
     private boolean legendFilterApplied = false;
     private boolean shinyFilterApplied = false;
+    private PokemonCardDataHolder.ViewHolder viewHolder;
 
     //indexed list for Filter purpose.
     private final String[] legendIdList = {"144", "145", "146", "150", "151", "243", "244", "245",
@@ -192,9 +197,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //TODO Look into LiveData and fix the favorite Icon Bug
         //TODO complete 3dot options
-        //TODO improve design and UI
-
     }
 
     public void setSortPopUpDialog() {
@@ -435,6 +439,14 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for (int i = 0; i < pkmnList.size(); i++) {
+            viewHolder.favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_selected_foreground);
         }
     }
 

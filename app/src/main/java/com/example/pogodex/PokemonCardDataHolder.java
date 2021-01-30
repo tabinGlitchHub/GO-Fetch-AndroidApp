@@ -2,6 +2,7 @@ package com.example.pogodex;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,9 +33,8 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
     private ArrayList<PokemonData> pokemonDataList;
     private ArrayList<PokemonData> pokemonDataListCopy;
     public static ArrayList<PokemonData> favoritePkmnList = new ArrayList<>(20);
-    public Button favBtn;
     private Context context;
-    int curveRadius = 44;
+    int curveRadius = 25;
 
     public PokemonCardDataHolder(Context context, ArrayList<PokemonData> pokemonDataList) {
         this.context = context;
@@ -59,9 +60,10 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.favBtn.setTag(position);
         int colorid = pokemonDataList.get(position).get_background();
-        int color = holder.parent.getContext().getColor(colorid);
-        holder.parent.setCardBackgroundColor(color);
+        Drawable color = holder.parent.getContext().getDrawable(colorid);
+        holder.parent.setBackground(color);
         holder.pokemonName.setText(pokemonDataList.get(position).get_pokemonName());
         holder.pokemonID.setText(pokemonDataList.get(position).get_pokemonID());
 
@@ -85,6 +87,14 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
                 .asBitmap()
                 .load(pokemonDataList.get(position).get_pokemonType2())
                 .into(holder.typeTwo);
+
+        refreshFavList(holder, position);
+    }
+
+    public void refreshFavList(ViewHolder viewHolder, int position) {
+        if (!pokemonDataList.get(position).isFavorite()) {
+            viewHolder.favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_deselected_foreground);
+        }
     }
 
 
@@ -150,7 +160,8 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
         private final ImageView pokemonBG;
         private final ImageView typeOne;
         private final ImageView typeTwo;
-        private CardView parent;
+        private RelativeLayout parent;
+        public Button favBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -167,25 +178,16 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
+                    int position = (int) favBtn.getTag();
                     PokemonData pkData = pokemonDataList.get(position);
                     if (!pkData.isFavorite() || !containmentCheck(pkData.get_pokemonID())) {
-
                         pkData.setFavorite(true);
                         favoritePkmnList.add(pkData);
-                        System.out.println(pkData.get_pokemonID());
-                        System.out.println(pkData.isFavorite());
-                        System.out.println(position);
                         favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_selected_foreground);
-
                     } else {
-
                         pkData.setFavorite(false);
                         favoritePkmnList.remove(pkData);
-                        System.out.println(pkData.get_pokemonID());
-                        System.out.println(pkData.isFavorite());
                         favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_deselected_foreground);
-
                     }
                 }
             });
