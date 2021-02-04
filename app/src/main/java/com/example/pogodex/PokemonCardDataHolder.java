@@ -1,6 +1,7 @@
 package com.example.pogodex;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -60,7 +63,6 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.favBtn.setTag(position);
         int colorid = pokemonDataList.get(position).get_background();
         Drawable color = holder.parent.getContext().getDrawable(colorid);
         holder.parent.setBackground(color);
@@ -87,14 +89,6 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
                 .asBitmap()
                 .load(pokemonDataList.get(position).get_pokemonType2())
                 .into(holder.typeTwo);
-
-        refreshFavList(holder, position);
-    }
-
-    public void refreshFavList(ViewHolder viewHolder, int position) {
-        if (!pokemonDataList.get(position).isFavorite()) {
-            viewHolder.favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_deselected_foreground);
-        }
     }
 
 
@@ -178,7 +172,7 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = (int) favBtn.getTag();
+                    int position = getAdapterPosition();
                     PokemonData pkData = pokemonDataList.get(position);
                     if (!pkData.isFavorite() || !containmentCheck(pkData.get_pokemonID())) {
                         pkData.setFavorite(true);

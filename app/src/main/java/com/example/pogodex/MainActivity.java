@@ -442,14 +442,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        for (int i = 0; i < pkmnList.size(); i++) {
-            viewHolder.favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_selected_foreground);
-        }
-    }
-
     private void SearchList() {
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

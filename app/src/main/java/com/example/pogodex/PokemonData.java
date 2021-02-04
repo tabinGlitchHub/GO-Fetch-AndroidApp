@@ -1,16 +1,9 @@
 package com.example.pogodex;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.util.Arrays;
 
 public class PokemonData implements Serializable {
 
