@@ -11,9 +11,11 @@
         android:roundIcon="@mipmap/ic_apk_logo_whtbg_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PoGoDex">
+        <activity android:name=".DexActivity"></activity>
         <activity android:name=".LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

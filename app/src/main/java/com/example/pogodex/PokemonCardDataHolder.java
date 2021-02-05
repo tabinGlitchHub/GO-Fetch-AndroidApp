@@ -1,6 +1,7 @@
 package com.example.pogodex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -183,6 +184,14 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
                         favoritePkmnList.remove(pkData);
                         favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_deselected_foreground);
                     }
+                }
+            });
+
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(parent.getContext(),DexActivity.class);
+                    context.startActivity(intent);
                 }
             });
         }
