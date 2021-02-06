@@ -111,6 +111,14 @@ public class PokemonData implements Serializable {
         }
         return null;
     }
+    public String get_pokemonTypeString() {
+        for (int i = 0; i <= 18; i++) {
+            if (_pokemonTypes[0].equals(typeOf[i])) {
+                return typeOf[i];
+            }
+        }
+        return null;
+    }
 
     //get the primry type of mon to draw ICON with Glide
     public String get_pokemonType1() {

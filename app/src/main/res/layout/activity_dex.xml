@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dexParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dex_gradient_electric"
@@ -33,6 +35,7 @@
                 app:layout_collapseMode="parallax" />
 
             <TextView
+                android:id="@+id/pokeID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -94,7 +97,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/mxCPtxt"
+                android:id="@+id/maxCPtxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -105,26 +108,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/maxCPtitle" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/statsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Stats"
                 android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/cardView"
+                app:layout_constraintStart_toStartOf="@+id/statsCardView"
                 app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
+                android:id="@+id/statsCardView"
                 android:layout_width="350dp"
                 android:layout_height="140dp"
                 android:layout_marginStart="10dp"
-                app:cardCornerRadius="7dp"
                 android:elevation="7dp"
+                app:cardCornerRadius="7dp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
+                android:id="@+id/evolutionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -135,7 +139,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/movesTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -147,7 +151,7 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
+                android:id="@+id/movesCard"
                 android:layout_width="350dp"
                 android:layout_height="170dp"
                 android:layout_marginTop="50dp"
@@ -160,6 +164,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline5">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cardConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -180,7 +185,7 @@
                         app:layout_constraintGuide_percent="0.5" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/fastMoveTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -191,7 +196,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/chargeMoveTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -202,7 +207,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/fastMove1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="18dp"
@@ -211,42 +216,43 @@
                         app:layout_constraintEnd_toStartOf="@+id/guideline9"
                         app:layout_constraintHorizontal_bias="0.297"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                        app:layout_constraintTop_toBottomOf="@+id/fastMoveTitle" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/fastMove2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:text="FastMove2"
                         android:textSize="15sp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView8"
-                        app:layout_constraintStart_toStartOf="@+id/textView8"
-                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                        app:layout_constraintEnd_toEndOf="@+id/fastMove1"
+                        app:layout_constraintStart_toStartOf="@+id/fastMove1"
+                        app:layout_constraintTop_toBottomOf="@+id/fastMove1" />
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/chargeMove2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:text="ChargedMove2"
                         android:textSize="15sp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView7"
-                        app:layout_constraintStart_toStartOf="@+id/textView7"
-                        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                        app:layout_constraintEnd_toEndOf="@+id/chargeMove1"
+                        app:layout_constraintStart_toStartOf="@+id/chargeMove1"
+                        app:layout_constraintTop_toBottomOf="@+id/chargeMove1" />
 
                     <TextView
+                        android:id="@+id/chargeMove3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:text="ChargedMove3"
                         android:textSize="15sp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView9"
-                        app:layout_constraintStart_toStartOf="@+id/textView9"
-                        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                        app:layout_constraintEnd_toEndOf="@+id/chargeMove2"
+                        app:layout_constraintStart_toStartOf="@+id/chargeMove2"
+                        app:layout_constraintTop_toBottomOf="@+id/chargeMove2" />
 
                     <TextView
-                        android:id="@+id/textView7"
+                        android:id="@+id/chargeMove1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="18dp"
@@ -255,7 +261,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.29"
                         app:layout_constraintStart_toStartOf="@+id/guideline9"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                        app:layout_constraintTop_toBottomOf="@+id/chargeMoveTitle" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -29,6 +29,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.facebook.shimmer.Shimmer;
 import com.facebook.shimmer.ShimmerDrawable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,6 +192,8 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(parent.getContext(),DexActivity.class);
+//                    intent.putExtra("id",pokemonDataList.get(getAdapterPosition()).get_pokemonID());
+                    intent.putExtra("id",(Serializable) pokemonDataList.get(getAdapterPosition()));
                     context.startActivity(intent);
                 }
             });
