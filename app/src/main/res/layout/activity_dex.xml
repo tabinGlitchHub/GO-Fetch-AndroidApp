@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dexParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dex_gradient_electric"
-    tools:context=".DexActivity">
+    tools:context=".Activities.DexActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarLay"
@@ -101,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="9999"
+                android:text=""
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="@+id/maxCPtitle"
                 app:layout_constraintStart_toStartOf="@+id/maxCPtitle"
@@ -112,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Stats"
+                android:text="Base Stats"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="@+id/statsCardView"
                 app:layout_constraintTop_toTopOf="@+id/guideline3" />
@@ -125,7 +124,16 @@
                 android:elevation="7dp"
                 app:cardCornerRadius="7dp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                    android:id="@+id/barChartStats"
+                    android:layout_width="286dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center|start"
+                    android:layout_marginEnd="10dp"/>
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/evolutionTitle"

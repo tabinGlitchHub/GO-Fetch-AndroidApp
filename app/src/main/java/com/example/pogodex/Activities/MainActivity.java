@@ -1,13 +1,10 @@
-package com.example.pogodex;
+package com.example.pogodex.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.opengl.Visibility;
-import android.os.Build;
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,20 +18,26 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pogodex.FavoriteMonActivity;
+import com.example.pogodex.Interfaces.RequestInterface;
+import com.example.pogodex.Interfaces.RequestInterfaceMaxCP;
+import com.example.pogodex.ModelClasses.PokemonGeneralData;
+import com.example.pogodex.ModelClasses.PokemonMaxCP;
+import com.example.pogodex.PokemonCardDataHolder;
+import com.example.pogodex.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -93,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
             "491", "638", "639", "640", "649", "808", "809"};
 
     //Will contain Filtered list without forms
-    ArrayList<PokemonData> pkmnList = new ArrayList<>();
+    ArrayList<PokemonGeneralData> pkmnList = new ArrayList<>();
 
     //Will contain unfiltered list with id,name,types and forms
-    ArrayList<PokemonData> pkmnListOG = new ArrayList<>();
+    ArrayList<PokemonGeneralData> pkmnListOG = new ArrayList<>();
 
     //To be used to temporarily store pkmlist original data
-    ArrayList<PokemonData> pkmnListTempCopy = new ArrayList<>();
+    ArrayList<PokemonGeneralData> pkmnListTempCopy = new ArrayList<>();
 
     PokemonCardDataHolder pkmnHolder;
 
@@ -222,16 +225,16 @@ public class MainActivity extends AppCompatActivity {
                 RadioButton radioButtonSelected = popUpView.findViewById(radioId);
 
                 if (radioId == R.id.radAlphBtn) {
-                    Collections.sort(pkmnList, new Comparator<PokemonData>() {
+                    Collections.sort(pkmnList, new Comparator<PokemonGeneralData>() {
                         @Override
-                        public int compare(PokemonData o1, PokemonData o2) {
+                        public int compare(PokemonGeneralData o1, PokemonGeneralData o2) {
                             return o1.get_pokemonName().compareTo(o2.get_pokemonName());
                         }
                     });
                 } else {
-                    Collections.sort(pkmnList, new Comparator<PokemonData>() {
+                    Collections.sort(pkmnList, new Comparator<PokemonGeneralData>() {
                         @Override
-                        public int compare(PokemonData o1, PokemonData o2) {
+                        public int compare(PokemonGeneralData o1, PokemonGeneralData o2) {
                             return Integer.valueOf(o1.get_pokemonID()) - Integer.valueOf(o2.get_pokemonID());
                         }
                     });
@@ -249,16 +252,16 @@ public class MainActivity extends AppCompatActivity {
                 RadioButton radioButtonSelected = popUpView.findViewById(radioId);
 
                 if (radioId == R.id.radAlphBtn) {
-                    Collections.sort(pkmnList, new Comparator<PokemonData>() {
+                    Collections.sort(pkmnList, new Comparator<PokemonGeneralData>() {
                         @Override
-                        public int compare(PokemonData o1, PokemonData o2) {
+                        public int compare(PokemonGeneralData o1, PokemonGeneralData o2) {
                             return o2.get_pokemonName().compareTo(o1.get_pokemonName());
                         }
                     });
                 } else {
-                    Collections.sort(pkmnList, new Comparator<PokemonData>() {
+                    Collections.sort(pkmnList, new Comparator<PokemonGeneralData>() {
                         @Override
-                        public int compare(PokemonData o1, PokemonData o2) {
+                        public int compare(PokemonGeneralData o1, PokemonGeneralData o2) {
                             return Integer.valueOf(o2.get_pokemonID()) - Integer.valueOf(o1.get_pokemonID());
                         }
                     });
@@ -389,15 +392,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void deepCopyArrList(ArrayList<PokemonData> src, ArrayList<PokemonData> des) {
-        Iterator<PokemonData> it = src.iterator();
+    public void deepCopyArrList(ArrayList<PokemonGeneralData> src, ArrayList<PokemonGeneralData> des) {
+        Iterator<PokemonGeneralData> it = src.iterator();
         while (it.hasNext()) {
-            PokemonData pd = it.next();
-            PokemonData newpd = new PokemonData();
+            PokemonGeneralData pd = it.next();
+            PokemonGeneralData newpd = new PokemonGeneralData();
             newpd.set_pokemonName(pd.get_pokemonName());
             newpd.set_pokemonID(pd.get_pokemonID());
             newpd.set_pokemonForm(pd.get_pokemonForm());
-            newpd.set_pokemonImage(pd.get_pokemonImage());
             newpd.set_pokemonTypes(pd.get_pokemonTypes());
             newpd.setFavorite(pd.isFavorite());
             des.add(newpd);
@@ -435,9 +437,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //if drawer is open on back pressed then close it before going back
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        //else if back is pressed upon applying filter then undo the filter
+        else if (legendFilterApplied || shinyFilterApplied) {
+            pkmnList.clear();
+            deepCopyArrList(pkmnListTempCopy, pkmnList);
+            pkmnHolder.notifyDataSetChanged();
+            //set filter flags to false checking which one was active
+            if (legendFilterApplied) {
+                legendFilterApplied = false;
+            } else {
+                shinyFilterApplied = false;
+            }
+        }
+        //when no conditions are met just go back as usual
+        else {
             super.onBackPressed();
         }
     }
@@ -465,11 +482,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         RequestInterface requestInterface = retrofit.create(RequestInterface.class);
-        Call<List<PokemonData>> call = requestInterface.getPokeJSON();
+        Call<List<PokemonGeneralData>> call = requestInterface.getPokeJSON();
 
-        call.enqueue(new Callback<List<PokemonData>>() {
+        call.enqueue(new Callback<List<PokemonGeneralData>>() {
             @Override
-            public void onResponse(Call<List<PokemonData>> call, Response<List<PokemonData>> response) {
+            public void onResponse(@NotNull Call<List<PokemonGeneralData>> call, @NotNull Response<List<PokemonGeneralData>> response) {
                 if (response != null) {
                     pkmnList = new ArrayList<>(response.body());
 
@@ -482,7 +499,8 @@ public class MainActivity extends AppCompatActivity {
                                 || pkmnList.get(i).get_pokemonForm().equals("Ordinary") || pkmnList.get(i).get_pokemonForm().equals("Aria")
                                 || pkmnList.get(i).get_pokemonForm().equals("Galarian") || pkmnList.get(i).get_pokemonForm().equals("Altered")
                                 || pkmnList.get(i).get_pokemonForm().equals("Land") || pkmnList.get(i).get_pokemonForm().equals("Overcast")
-                                || pkmnList.get(i).get_pokemonForm().equals("East_sea")) {
+                                || pkmnList.get(i).get_pokemonForm().equals("East_sea") || pkmnList.get(i).get_pokemonForm().equals("Purified")
+                                || pkmnList.get(i).get_pokemonForm().equals("Shadow")) {
                             i++;
                         } else {
                             pkmnList.remove(i);
@@ -498,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<PokemonData>> call, Throwable t) {
+            public void onFailure(Call<List<PokemonGeneralData>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Check your Internet Connection and try again.", Toast.LENGTH_LONG).show();
             }
         });

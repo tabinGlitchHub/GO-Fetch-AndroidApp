@@ -90,12 +90,21 @@
                 android:layout_toEndOf="@+id/type1Icon"
                 android:src="@mipmap/ic_sample_type1_foreground" />
 
+            <ImageView
+                android:id="@+id/formIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/ic_sample_type1_foreground" />
+
             <Button
                 android:id="@+id/favoriteBTN"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="80dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:background="@mipmap/ic_fav_pb_btn_deselected_foreground" />
 
         </RelativeLayout>

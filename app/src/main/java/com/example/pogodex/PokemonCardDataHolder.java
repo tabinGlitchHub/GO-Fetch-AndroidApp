@@ -2,11 +2,8 @@ package com.example.pogodex;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +16,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.facebook.shimmer.Shimmer;
-import com.facebook.shimmer.ShimmerDrawable;
+import com.example.pogodex.Activities.DexActivity;
+import com.example.pogodex.ModelClasses.PokemonGeneralData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,13 +29,13 @@ import java.util.List;
 
 public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataHolder.ViewHolder> implements Filterable {
 
-    private ArrayList<PokemonData> pokemonDataList;
-    private ArrayList<PokemonData> pokemonDataListCopy;
-    public static ArrayList<PokemonData> favoritePkmnList = new ArrayList<>(20);
+    private ArrayList<PokemonGeneralData> pokemonDataList;
+    private ArrayList<PokemonGeneralData> pokemonDataListCopy;
+    public static ArrayList<PokemonGeneralData> favoritePkmnList = new ArrayList<>(20);
     private Context context;
     int curveRadius = 25;
 
-    public PokemonCardDataHolder(Context context, ArrayList<PokemonData> pokemonDataList) {
+    public PokemonCardDataHolder(Context context, ArrayList<PokemonGeneralData> pokemonDataList) {
         this.context = context;
         this.pokemonDataList = pokemonDataList;
         pokemonDataListCopy = new ArrayList<>(pokemonDataList);
@@ -50,7 +44,7 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
     public PokemonCardDataHolder() {
     }
 
-    public ArrayList<PokemonData> getFavoritePkmnList() {
+    public ArrayList<PokemonGeneralData> getFavoritePkmnList() {
         return favoritePkmnList;
     }
 
@@ -91,6 +85,11 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
                 .asBitmap()
                 .load(pokemonDataList.get(position).get_pokemonType2())
                 .into(holder.typeTwo);
+
+        Glide.with(context)
+                .asBitmap()
+                .load(pokemonDataList.get(position).get_form())
+                .into(holder.formIcon);
     }
 
 
@@ -99,7 +98,7 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
         return pokemonDataList.size();
     }
 
-    public void setPokemonDataList(ArrayList<PokemonData> pokemonDataList) {
+    public void setPokemonDataList(ArrayList<PokemonGeneralData> pokemonDataList) {
         this.pokemonDataList = pokemonDataList;
         notifyDataSetChanged();
     }
@@ -112,13 +111,13 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
     private Filter Filtered = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<PokemonData> filteredList = new ArrayList<>();
+            List<PokemonGeneralData> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(pokemonDataListCopy);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (PokemonData data : pokemonDataListCopy) {
+                for (PokemonGeneralData data : pokemonDataListCopy) {
                     if (data.get_pokemonName().toLowerCase().contains(filterPattern)
                             || data.get_pokemonID().toLowerCase().startsWith(filterPattern)) {
                         filteredList.add(data);
@@ -156,6 +155,7 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
         private final ImageView pokemonBG;
         private final ImageView typeOne;
         private final ImageView typeTwo;
+        private final ImageView formIcon;
         private RelativeLayout parent;
         public Button favBtn;
 
@@ -170,12 +170,13 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
             typeTwo = itemView.findViewById(R.id.type2Icon);
             favBtn = itemView.findViewById(R.id.favoriteBTN);
             parent = itemView.findViewById(R.id.pkmnCard);
+            formIcon = itemView.findViewById(R.id.formIcon);
 
             favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    PokemonData pkData = pokemonDataList.get(position);
+                    PokemonGeneralData pkData = pokemonDataList.get(position);
                     if (!pkData.isFavorite() || !containmentCheck(pkData.get_pokemonID())) {
                         pkData.setFavorite(true);
                         favoritePkmnList.add(pkData);
@@ -191,7 +192,7 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
             parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(parent.getContext(),DexActivity.class);
+                    Intent intent = new Intent(parent.getContext(), DexActivity.class);
 //                    intent.putExtra("id",pokemonDataList.get(getAdapterPosition()).get_pokemonID());
                     intent.putExtra("id",(Serializable) pokemonDataList.get(getAdapterPosition()));
                     context.startActivity(intent);

@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
+import com.example.pogodex.ModelClasses.PokemonGeneralData;
+
 import java.util.ArrayList;
 
 public class FavoriteMonActivity extends AppCompatActivity {
@@ -17,7 +18,7 @@ public class FavoriteMonActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TextView emptyWarnTxt;
     PokemonCardDataHolder pkmnHolder = new PokemonCardDataHolder();
-    ArrayList<PokemonData> favListedMons = new ArrayList<>();
+    ArrayList<PokemonGeneralData> favListedMons = new ArrayList<>();
     FavPokemonCardDataHolder favholder;
 
     @Override
@@ -29,7 +30,7 @@ public class FavoriteMonActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.favMonsRecyclerV);
 
         Intent intent = getIntent();
-        favListedMons = (ArrayList<PokemonData>) intent.getSerializableExtra("key");
+        favListedMons = (ArrayList<PokemonGeneralData>) intent.getSerializableExtra("key");
 
 
         if(favListedMons.size() == 0){

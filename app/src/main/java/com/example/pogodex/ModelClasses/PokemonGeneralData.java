@@ -1,11 +1,12 @@
-package com.example.pogodex;
+package com.example.pogodex.ModelClasses;
 
+import com.example.pogodex.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class PokemonData implements Serializable {
+public class PokemonGeneralData implements Serializable {
 
     @SerializedName("pokemon_name")
     @Expose
@@ -14,10 +15,6 @@ public class PokemonData implements Serializable {
     @SerializedName("pokemon_id")
     @Expose
     private String _pokemonID;
-
-    @SerializedName("pokemon_image")
-    @Expose
-    private String _pokemonImage;
 
     @SerializedName("form")
     @Expose
@@ -48,6 +45,11 @@ public class PokemonData implements Serializable {
             "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_rock.png",
             "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_steel.png",
             "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_water.png"
+    };
+
+    private String[] ofForm = {
+            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Rocket/ic_shadow.png",
+            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Rocket/ic_purified.png"
     };
 
     private String[] typeIconList = {
@@ -86,9 +88,20 @@ public class PokemonData implements Serializable {
             R.drawable.card_gradient_rock, R.drawable.card_gradient_steel, R.drawable.card_gradient_water
     };
 
-    public String get_pokemonImage(){
+    public String get_form() {
+        switch (_pokemonForm) {
+            case "Purified":
+                return ofForm[1];
+            case "Shadow":
+                return ofForm[0];
+            default:
+                return null;
+        }
+    }
+
+    public String get_pokemonImage() {
         for (int i = 0; i < 725; i++) {
-            pkmnSprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vii/ultra-sun-ultra-moon/"+ get_pokemonID() +".png";
+            pkmnSprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vii/ultra-sun-ultra-moon/" + get_pokemonID() + ".png";
         }
         return pkmnSprite;
     }
@@ -111,6 +124,7 @@ public class PokemonData implements Serializable {
         }
         return null;
     }
+
     public String get_pokemonTypeString() {
         for (int i = 0; i <= 18; i++) {
             if (_pokemonTypes[0].equals(typeOf[i])) {
@@ -183,10 +197,6 @@ public class PokemonData implements Serializable {
 
     public void set_pokemonID(String _pokemonID) {
         this._pokemonID = _pokemonID;
-    }
-
-    public void set_pokemonImage(String _pokemonImage) {
-        this._pokemonImage = _pokemonImage;
     }
 
 }

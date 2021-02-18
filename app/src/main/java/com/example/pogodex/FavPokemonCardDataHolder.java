@@ -13,13 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-
-import org.w3c.dom.Text;
+import com.example.pogodex.ModelClasses.PokemonGeneralData;
 
 import java.util.ArrayList;
 
@@ -27,10 +25,10 @@ import static com.example.pogodex.PokemonCardDataHolder.favoritePkmnList;
 
 public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCardDataHolder.ViewHolder> {
 
-    ArrayList<PokemonData> favpkmnList;
+    ArrayList<PokemonGeneralData> favpkmnList;
     private Context context;
 
-    FavPokemonCardDataHolder(Context context, ArrayList<PokemonData> favpkmn) {
+    FavPokemonCardDataHolder(Context context, ArrayList<PokemonGeneralData> favpkmn) {
         this.context = context;
         this.favpkmnList = favoritePkmnList;
     }
@@ -109,7 +107,7 @@ public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCar
                 @Override
                 public void onClick(View v) {
                     int position = (int) favBtn.getTag();
-                    PokemonData pkData = favpkmnList.get(position);
+                    PokemonGeneralData pkData = favpkmnList.get(position);
                     pkData.setFavorite(false);
                     favpkmnList.remove(pkData);
                     notifyDataSetChanged();
