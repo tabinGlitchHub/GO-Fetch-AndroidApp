@@ -149,13 +149,8 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView pokemonName;
-        private final TextView pokemonID;
-        private ImageView pokemonImg;
-        private final ImageView pokemonBG;
-        private final ImageView typeOne;
-        private final ImageView typeTwo;
-        private final ImageView formIcon;
+        private final TextView pokemonName, pokemonID;
+        private final ImageView pokemonImg, pokemonBG, typeOne, typeTwo, formIcon;;
         private RelativeLayout parent;
         public Button favBtn;
 

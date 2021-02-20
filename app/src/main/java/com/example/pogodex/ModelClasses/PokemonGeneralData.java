@@ -85,7 +85,8 @@ public class PokemonGeneralData implements Serializable {
             R.drawable.card_gradient_fire, R.drawable.card_gradient_flyng, R.drawable.card_gradient_ghost,
             R.drawable.card_gradient_grass, R.drawable.card_gradient_ground, R.drawable.card_gradient_ice,
             R.drawable.card_gradient_normal, R.drawable.card_gradient_poison, R.drawable.card_gradient_psychic,
-            R.drawable.card_gradient_rock, R.drawable.card_gradient_steel, R.drawable.card_gradient_water
+            R.drawable.card_gradient_rock, R.drawable.card_gradient_steel, R.drawable.card_gradient_water,
+            R.drawable.card_gradient_purified, R.drawable.card_gradient_shadow
     };
 
     public String get_form() {
@@ -107,8 +108,12 @@ public class PokemonGeneralData implements Serializable {
     }
 
     public Integer get_background() {
-        for (int i = 0; i <= 18; i++) {
-            if (_pokemonTypes[0].equals(typeOf[i])) {
+        for (int i = 0; i <= 19; i++) {
+            if (_pokemonForm.equals("Purified")) {
+                return colorsForBG[18];
+            } else if (_pokemonForm.equals("Shadow")) {
+                return colorsForBG[19];
+            } else if (_pokemonTypes[0].equals(typeOf[i])) {
                 return colorsForBG[i];
             }
         }
@@ -117,8 +122,12 @@ public class PokemonGeneralData implements Serializable {
 
     //get the primary type of mon to draw Background with Glide
     public String get_pokemonType() {
-        for (int i = 0; i <= 18; i++) {
-            if (_pokemonTypes[0].equals(typeOf[i])) {
+        for (int i = 0; i <= 19; i++) {
+            if (_pokemonForm.equals("Purified")) {
+                return null;
+            } else if (_pokemonForm.equals("Shadow")) {
+                return null;
+            } else if (_pokemonTypes[0].equals(typeOf[i])) {
                 return typeList[i];
             }
         }
