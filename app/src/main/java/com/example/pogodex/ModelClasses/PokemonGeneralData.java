@@ -1,12 +1,15 @@
 package com.example.pogodex.ModelClasses;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.pogodex.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class PokemonGeneralData implements Serializable {
+public class PokemonGeneralData implements Parcelable {
 
     @SerializedName("pokemon_name")
     @Expose
@@ -143,7 +146,7 @@ public class PokemonGeneralData implements Serializable {
         return null;
     }
 
-    //get the primry type of mon to draw ICON with Glide
+    //get the primary type of mon to draw ICON with Glide
     public String get_pokemonType1() {
         for (int i = 0; i <= 18; i++) {
             if (_pokemonTypes[0].equals(typeOf[i])) {
@@ -200,6 +203,9 @@ public class PokemonGeneralData implements Serializable {
         this._pokemonName = _pokemonName;
     }
 
+    public PokemonGeneralData() {
+    }
+
     public String get_pokemonID() {
         return _pokemonID;
     }
@@ -208,4 +214,32 @@ public class PokemonGeneralData implements Serializable {
         this._pokemonID = _pokemonID;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_pokemonName);
+        dest.writeString(_pokemonID);
+        dest.writeString(_pokemonForm);
+        dest.writeStringArray(_pokemonTypes);
+    }
+    public PokemonGeneralData(Parcel in) {
+        _pokemonName = in.readString();
+        _pokemonID = in.readString();
+        _pokemonForm = in.readString();
+        _pokemonTypes = in.createStringArray();
+    }
+
+    public static final Parcelable.Creator<PokemonGeneralData> CREATOR = new Parcelable.Creator<PokemonGeneralData>() {
+        public PokemonGeneralData createFromParcel(Parcel in) {
+            return new PokemonGeneralData(in);
+        }
+
+        public PokemonGeneralData[] newArray(int size) {
+            return new PokemonGeneralData[size];
+        }
+    };
 }

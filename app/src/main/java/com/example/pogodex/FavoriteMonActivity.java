@@ -29,8 +29,8 @@ public class FavoriteMonActivity extends AppCompatActivity {
         emptyWarnTxt = findViewById(R.id.emptyWarningTxt);
         recyclerView = findViewById(R.id.favMonsRecyclerV);
 
-        Intent intent = getIntent();
-        favListedMons = (ArrayList<PokemonGeneralData>) intent.getSerializableExtra("key");
+        Bundle bundle = getIntent().getExtras();
+        favListedMons = bundle.getParcelableArrayList("key");
 
 
         if(favListedMons.size() == 0){

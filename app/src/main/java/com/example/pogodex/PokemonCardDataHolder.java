@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.pogodex.Activities.DexActivity;
+import com.example.pogodex.ModelClasses.PokemonChargedMoves;
+import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
 
 import java.io.Serializable;
@@ -31,14 +34,20 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
 
     private ArrayList<PokemonGeneralData> pokemonDataList;
     private ArrayList<PokemonGeneralData> pokemonDataListCopy;
+    ArrayList<PokemonFastMoves> pkmnFastMoves = new ArrayList<>();
+    ArrayList<PokemonChargedMoves> pkmnChargedMoves = new ArrayList<>();
+
     public static ArrayList<PokemonGeneralData> favoritePkmnList = new ArrayList<>(20);
     private Context context;
     int curveRadius = 25;
 
-    public PokemonCardDataHolder(Context context, ArrayList<PokemonGeneralData> pokemonDataList) {
+    public PokemonCardDataHolder(Context context, ArrayList<PokemonGeneralData> pokemonDataList, ArrayList<PokemonFastMoves> FastMoves
+                                    ,ArrayList<PokemonChargedMoves> ChargedMoves) {
         this.context = context;
         this.pokemonDataList = pokemonDataList;
         pokemonDataListCopy = new ArrayList<>(pokemonDataList);
+        this.pkmnFastMoves = FastMoves;
+        this.pkmnChargedMoves = ChargedMoves;
     }
 
     public PokemonCardDataHolder() {
@@ -188,8 +197,14 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(parent.getContext(), DexActivity.class);
-//                    intent.putExtra("id",pokemonDataList.get(getAdapterPosition()).get_pokemonID());
-                    intent.putExtra("id",(Serializable) pokemonDataList.get(getAdapterPosition()));
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("fm",pkmnFastMoves);
+                    bundle.putParcelableArrayList("cm",pkmnChargedMoves);
+                    bundle.putParcelable("id",pokemonDataList.get(getAdapterPosition()));
+                    intent.putExtras(bundle);
+//                    intent.putExtra("id",(Serializable) pokemonDataList.get(getAdapterPosition()));
+//                    intent.putExtra("fm",(Serializable) pkmnFastMoves);
+//                    intent.putExtra("cm",(Serializable) pkmnChargedMoves);
                     context.startActivity(intent);
                 }
             });

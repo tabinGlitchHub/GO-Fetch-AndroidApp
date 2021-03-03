@@ -18,15 +18,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.pogodex.ChargeMovesAdapter;
 import com.example.pogodex.EvolutionsAdapter;
+import com.example.pogodex.FastMovesAdapter;
 import com.example.pogodex.Interfaces.RequestInterfaceEvolutions;
 import com.example.pogodex.Interfaces.RequestInterfaceMaxCP;
+import com.example.pogodex.Interfaces.RequestInterfaceMovePool;
 import com.example.pogodex.Interfaces.RequestInterfaceStats;
+import com.example.pogodex.ModelClasses.PokemonChargedMoves;
 import com.example.pogodex.ModelClasses.PokemonEvolutionsChld;
 import com.example.pogodex.ModelClasses.PokemonEvolutionsPar;
+import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
 import com.example.pogodex.ModelClasses.PokemonMaxCP;
 import com.example.pogodex.ModelClasses.PokemonStats;
+import com.example.pogodex.ModelClasses.SelectedPokemonMoves;
 import com.example.pogodex.R;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -48,18 +54,19 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
 
     //Declare All Views
     CollapsingToolbarLayout toolBar;
-    TextView pokeIDTxt, maxCpTxt, fastMove1Txt, fastMove2Txt,
-            chargeMove1Txt, chargeMove2Txt, chargeMove3Txt, noEvoTxt;
+    TextView pokeIDTxt, maxCpTxt, noEvoTxt;
     ImageView pokeImage, type1DexIcon, type2DexIcon, downArrow;
     CoordinatorLayout parentLay;
     HorizontalBarChart barChart;
-    RecyclerView evolutionRV;
+    RecyclerView evolutionRV, fastMoveRV, chargedMoveRV;
     EvolutionsAdapter evoAdapter;
     NestedScrollView evoScrollView;
+    FastMovesAdapter fmAdapter;
+    ChargeMovesAdapter cmAdapter;
 
     private static String JSON_Url = "https://pokemon-go1.p.rapidapi.com/";
 
-    private Integer[] gradientBG = {
+    private final Integer[] gradientBG = {
             R.drawable.dex_gradient_bug, R.drawable.dex_gradient_dark, R.drawable.dex_gradient_dragon,
             R.drawable.dex_gradient_electric, R.drawable.dex_gradient_fairy, R.drawable.dex_gradient_fighting,
             R.drawable.dex_gradient_fire, R.drawable.dex_gradient_flyng, R.drawable.dex_gradient_ghost,
@@ -79,7 +86,14 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
     private ArrayList<BarEntry> statEntry = new ArrayList<>();
     private BarDataSet barDataSet;
     private BarData barData;
+    private ArrayList<SelectedPokemonMoves> selectedPkmn;
+    private ArrayList<PokemonFastMoves> allFastMoves;
+    private ArrayList<PokemonChargedMoves> allChargedMoves = new ArrayList<>();
+    private ArrayList<PokemonFastMoves> finalFastMoves = new ArrayList<>();
+    private ArrayList<PokemonChargedMoves> finalChargedMoves = new ArrayList<>();
 
+
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,16 +113,21 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
         noEvoTxt = findViewById(R.id.noEvoTxt);
         downArrow = findViewById(R.id.scrollDownArrow);
         evoScrollView = findViewById(R.id.evoScrollView);
+        fastMoveRV = findViewById(R.id.fastMoveRecyclerView);
+        chargedMoveRV = findViewById(R.id.chargeMoveRecyclerView);
 
         evolutionRV.setLayoutManager(new LinearLayoutManager(this));
+        fastMoveRV.setLayoutManager(new LinearLayoutManager(this));
+        chargedMoveRV.setLayoutManager(new LinearLayoutManager(this));
         noEvoTxt.setText("Loading...");
         downArrow.setVisibility(View.INVISIBLE);
 
-        //TODO Complete UI
-
-
         //get Data from Main Activity from received intent
-        data = (PokemonGeneralData) getIntent().getSerializableExtra("id");
+        Bundle bundle = getIntent().getExtras();
+        data = (PokemonGeneralData) bundle.getParcelable("id");
+
+        allFastMoves = bundle.getParcelableArrayList("fm");
+        allChargedMoves = bundle.getParcelableArrayList("cm");
 
         pokeIDTxt.setText("#" + data.get_pokemonID());
         toolBar.setTitle(data.get_pokemonName());
@@ -188,7 +207,7 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
 
             @Override
             public void onFailure(Call<List<PokemonMaxCP>> call, Throwable t) {
-                Toast.makeText(DexActivity.this, "Network Error! Try Again Later.", Toast.LENGTH_LONG).show();
+                Toast.makeText(DexActivity.this, "Error Loading Data! Try Again Later.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -229,7 +248,7 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
 
             @Override
             public void onFailure(Call<List<PokemonStats>> call, Throwable t) {
-                Toast.makeText(DexActivity.this, "Network Error! Try Again Later.", Toast.LENGTH_LONG).show();
+                Toast.makeText(DexActivity.this, "Error Loading Data! Try Again Later.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -249,6 +268,7 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
                                 && pkmnListEvosParent.get(i).get_pokemonForm().equals(data.get_pokemonForm())) {
                             pkmnListEvosChild = new ArrayList<PokemonEvolutionsChld>(pkmnListEvosParent.get(i).getEvolutions());
                             noEvoTxt.setVisibility(View.GONE);
+                            evoScrollView.getViewTreeObserver().addOnScrollChangedListener(DexActivity.this);
                             i++;
                         } else {
                             pkmnListEvosParent.remove(i);
@@ -256,18 +276,77 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
                     }
                     if (pkmnListEvosParent.size() == 0) {
                         noEvoTxt.setText("Doesn't Evolve.");
+                        evoScrollView.setVisibility(View.GONE);
                     }
                 }
                 evoAdapter = new EvolutionsAdapter(pkmnListEvosChild, DexActivity.this);
                 evolutionRV.setAdapter(evoAdapter);
-                evoScrollView.getViewTreeObserver().addOnScrollChangedListener(DexActivity.this);
             }
 
             @Override
             public void onFailure(Call<List<PokemonEvolutionsPar>> call, Throwable t) {
-                Toast.makeText(DexActivity.this, "Network Error! Try Again Later.", Toast.LENGTH_LONG).show();
+                Toast.makeText(DexActivity.this, "Error Loading Data! Try Again Later.", Toast.LENGTH_LONG).show();
             }
         });
+
+        //Make a call for 'Moves Lists'
+        RequestInterfaceMovePool requestInterfaceMovePool = retrofit.create(RequestInterfaceMovePool.class);
+        Call<List<SelectedPokemonMoves>> call5 = requestInterfaceMovePool.getAllMoveJSON();
+
+        call5.enqueue(new Callback<List<SelectedPokemonMoves>>() {
+            @Override
+            public void onResponse(Call<List<SelectedPokemonMoves>> call, Response<List<SelectedPokemonMoves>> response) {
+                selectedPkmn = new ArrayList<>(response.body());
+                int numOfFM = 0;
+                int numOfCM = 0;
+                for (int i = 0; i < selectedPkmn.size(); ) {
+                    if (data.get_pokemonName().equals(selectedPkmn.get(i).get_pokemonName())
+                            && data.get_pokemonForm().equals(selectedPkmn.get(i).get_pokemonForm())) {
+                        //append all elite moves to normal move list since only single list can be passed to recyclerview
+                        selectedPkmn.get(i).get_fastMoves().addAll(selectedPkmn.get(i).get_eliteFastMoves());
+                        selectedPkmn.get(i).get_chargedMoves().addAll(selectedPkmn.get(i).get_eliteChargedMoves());
+
+                        //compare the current pkmn fast moves to the list of all fast moves and get details
+                        for (int j = 0; j < allFastMoves.size() && numOfFM < selectedPkmn.get(i).get_fastMoves().size(); ) {
+                            if (selectedPkmn.get(i).get_fastMoves().get(numOfFM).equals(allFastMoves.get(j).get_fMoveName())) {
+                                finalFastMoves.add(allFastMoves.get(j));
+                                numOfFM++;
+                                j = 0;
+                            } else {
+                                j++;
+                            }
+                        }
+
+                        //compare the current pkmn charged moves to the list of all charged moves and get details
+                        for (int j = 0; j < allChargedMoves.size() && numOfCM < selectedPkmn.get(i).get_chargedMoves().size(); ) {
+                            if (selectedPkmn.get(i).get_chargedMoves().get(numOfCM).equals(allChargedMoves.get(j).get_cMoveName())) {
+                                finalChargedMoves.add(allChargedMoves.get(j));
+                                numOfCM++;
+                                j = 0;
+                            } else {
+                                j++;
+                            }
+                        }
+
+                        i++;
+                    } else {
+                        selectedPkmn.remove(i);
+                    }
+                }
+                //assign object to adapter
+                fmAdapter = new FastMovesAdapter(finalFastMoves, DexActivity.this);
+                cmAdapter = new ChargeMovesAdapter(finalChargedMoves, DexActivity.this);
+                //set adapter
+                fastMoveRV.setAdapter(fmAdapter);
+                chargedMoveRV.setAdapter(cmAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<SelectedPokemonMoves>> call, Throwable t) {
+                Toast.makeText(DexActivity.this, "Error Loading Data! Try Again Later.", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -317,17 +396,19 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
         int top = evoScrollView.getScrollY();
         int bottom = view.getBottom() - (evoScrollView.getHeight() + evoScrollView.getScrollY());
 
-        if(pkmnListEvosChild.size() > 1){
+        if (pkmnListEvosChild.size() > 1) {
             if (top <= 0) {
                 downArrow.setVisibility(View.VISIBLE);
-                if(downArrow.getRotation() > 0){downArrow.setRotation(0);}
+                if (downArrow.getRotation() > 0) {
+                    downArrow.setRotation(0);
+                }
             } else if (bottom <= 0) {
                 downArrow.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 downArrow.setRotation(180);
                 downArrow.setVisibility(View.VISIBLE);
             }
-        }else{
+        } else {
             downArrow.setVisibility(View.INVISIBLE);
         }
 
