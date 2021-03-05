@@ -24,11 +24,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pogodex.FavoriteMonActivity;
-import com.example.pogodex.Interfaces.RequestInterface;
 import com.example.pogodex.Interfaces.RequestInterfaceChargedMoves;
 import com.example.pogodex.Interfaces.RequestInterfaceFastMoves;
 import com.example.pogodex.ModelClasses.PokemonChargedMoves;
@@ -36,12 +37,12 @@ import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
 import com.example.pogodex.PokemonCardDataHolder;
 import com.example.pogodex.R;
+import com.example.pogodex.ViewModels.MainActivityViewModel;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean shinyFilterApplied = false;
     private boolean isDataLoaded = false;
     private PokemonCardDataHolder.ViewHolder viewHolder;
+    private MainActivityViewModel mainActivityViewModel;
 
     //indexed list for Filter purpose.
     private final String[] legendIdList = {"144", "145", "146", "150", "151", "243", "244", "245",
@@ -131,6 +133,20 @@ public class MainActivity extends AppCompatActivity {
         shimmerFrameLayout = findViewById(R.id.shimmer_layout);
 
         shimmerFrameLayout.startShimmer();
+
+        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        mainActivityViewModel.init();
+
+        mainActivityViewModel.getGenData().observe(this, new Observer<ArrayList<PokemonGeneralData>>() {
+            @Override
+            public void onChanged(ArrayList<PokemonGeneralData> pokemonGeneralData) {
+                pkmnHolder.notifyDataSetChanged();
+            }
+        });
+
+        pkmnHolder = new PokemonCardDataHolder(MainActivity.this, mainActivityViewModel.getGenData().getValue(), pkmnFastMoves, pkmnChargedMoves);
+        recyclerView.setAdapter(pkmnHolder);
 
         setSupportActionBar(toolbar);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -495,47 +511,12 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        RequestInterface requestInterface = retrofit.create(RequestInterface.class);
-        Call<List<PokemonGeneralData>> call = requestInterface.getPokeJSON();
-
-        call.enqueue(new Callback<List<PokemonGeneralData>>() {
-            @Override
-            public void onResponse(@NotNull Call<List<PokemonGeneralData>> call, @NotNull Response<List<PokemonGeneralData>> response) {
-                if (response != null) {
-                    pkmnList = new ArrayList<>(response.body());
-
-                    //Copy Original JSON array to backup List
-                    deepCopyArrList(pkmnList, pkmnListOG);
-
-                    //Filter to display only Normal forms
-                    for (int i = 0; i < pkmnList.size(); ) {
-                        if (pkmnList.get(i).get_pokemonForm().equals("Normal") || pkmnList.get(i).get_pokemonForm().equals("Incarnate")
-                                || pkmnList.get(i).get_pokemonForm().equals("Ordinary") || pkmnList.get(i).get_pokemonForm().equals("Aria")
-                                || pkmnList.get(i).get_pokemonForm().equals("Galarian") || pkmnList.get(i).get_pokemonForm().equals("Altered")
-                                || pkmnList.get(i).get_pokemonForm().equals("Land") || pkmnList.get(i).get_pokemonForm().equals("Overcast")
-                                || pkmnList.get(i).get_pokemonForm().equals("East_sea") || pkmnList.get(i).get_pokemonForm().equals("Purified")
-                                || pkmnList.get(i).get_pokemonForm().equals("Shadow")) {
-                            i++;
-                        } else {
-                            pkmnList.remove(i);
-                        }
-                    }
-                    fabParent.setEnabled(true);
-                    isDataLoaded = true;
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                }
-                //Assign to Adapter
-                pkmnHolder = new PokemonCardDataHolder(MainActivity.this, pkmnList, pkmnFastMoves, pkmnChargedMoves);
-                recyclerView.setAdapter(pkmnHolder);
-                deepCopyArrList(pkmnList, pkmnListTempCopy);
-            }
-
-            @Override
-            public void onFailure(Call<List<PokemonGeneralData>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Check your Internet Connection and try again.", Toast.LENGTH_LONG).show();
-            }
-        });
+        fabParent.setEnabled(true);
+        isDataLoaded = true;
+        shimmerFrameLayout.stopShimmer();
+        shimmerFrameLayout.setVisibility(View.GONE);
+        //Assign to Adapter
+        deepCopyArrList(mainActivityViewModel.getGenData().getValue(), pkmnListTempCopy);
 
         RequestInterfaceFastMoves requestInterfaceFastMoves = retrofit.create(RequestInterfaceFastMoves.class);
         Call<List<PokemonFastMoves>> call2 = requestInterfaceFastMoves.getFastMoveJSON();
