@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isDataLoaded = false;
     private PokemonCardDataHolder.ViewHolder viewHolder;
     private MainActivityViewModel mainActivityViewModel;
+    private static MainActivity mainActivity;
 
     //indexed list for Filter purpose.
     private final String[] legendIdList = {"144", "145", "146", "150", "151", "243", "244", "245",
@@ -131,31 +132,17 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
         shimmerFrameLayout = findViewById(R.id.shimmer_layout);
-
-        shimmerFrameLayout.startShimmer();
-
-        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-
-        mainActivityViewModel.init();
-
-        mainActivityViewModel.getGenData().observe(this, new Observer<ArrayList<PokemonGeneralData>>() {
-            @Override
-            public void onChanged(ArrayList<PokemonGeneralData> pokemonGeneralData) {
-                pkmnHolder.notifyDataSetChanged();
-            }
-        });
-
-        pkmnHolder = new PokemonCardDataHolder(MainActivity.this, mainActivityViewModel.getGenData().getValue(), pkmnFastMoves, pkmnChargedMoves);
-        recyclerView.setAdapter(pkmnHolder);
-
-        setSupportActionBar(toolbar);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        searchView = (androidx.appcompat.widget.SearchView) findViewById(R.id.searchView);
 
         //Animations initialization
         Animation rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
         Animation rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
         Animation fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
         Animation toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
+
+        shimmerFrameLayout.startShimmer();
+
+        setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -164,12 +151,28 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
+
+        setRecyclerView();
+        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        mainActivityViewModel.init();
+
+        mainActivityViewModel.getPkmnGenDataList().observe(this, new Observer<List<PokemonGeneralData>>() {
+            @Override
+            public void onChanged(List<PokemonGeneralData> pokemonGeneralData) {
+                if(pokemonGeneralData!=null){
+                    pkmnList = new ArrayList<>(pokemonGeneralData);
+                    pkmnHolder.setPokemonDataList((ArrayList<PokemonGeneralData>) pokemonGeneralData);
+                }
+            }
+        });
+
+
         fabParent.setEnabled(false);
 
         //Get list from JSON source
         ExtractListOfPKMN();
 
-        searchView = (androidx.appcompat.widget.SearchView) findViewById(R.id.searchView);
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         //Execute Search from RecyclerView list
@@ -227,6 +230,12 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO Look into LiveData and fix the favorite Icon Bug
         //TODO complete 3dot options
+    }
+
+    public void setRecyclerView() {
+        pkmnHolder = new PokemonCardDataHolder(MainActivity.this, pkmnList, pkmnFastMoves, pkmnChargedMoves);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setAdapter(pkmnHolder);
     }
 
     public void setSortPopUpDialog() {
@@ -417,7 +426,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void deepCopyArrList(@NotNull ArrayList<PokemonGeneralData> src, ArrayList<PokemonGeneralData> des) {
+    public void deepCopyArrList(List<PokemonGeneralData> src, ArrayList<PokemonGeneralData> des) {
         Iterator<PokemonGeneralData> it = src.iterator();
         while (it.hasNext()) {
             PokemonGeneralData pd = it.next();
@@ -516,7 +525,6 @@ public class MainActivity extends AppCompatActivity {
         shimmerFrameLayout.stopShimmer();
         shimmerFrameLayout.setVisibility(View.GONE);
         //Assign to Adapter
-        deepCopyArrList(mainActivityViewModel.getGenData().getValue(), pkmnListTempCopy);
 
         RequestInterfaceFastMoves requestInterfaceFastMoves = retrofit.create(RequestInterfaceFastMoves.class);
         Call<List<PokemonFastMoves>> call2 = requestInterfaceFastMoves.getFastMoveJSON();

@@ -104,7 +104,10 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
 
     @Override
     public int getItemCount() {
-        return pokemonDataList.size();
+        if(pokemonDataList != null){
+            return pokemonDataList.size();
+        }
+        return 0;
     }
 
     public void setPokemonDataList(ArrayList<PokemonGeneralData> pokemonDataList) {
