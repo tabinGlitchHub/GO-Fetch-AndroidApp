@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<PokemonFastMoves> pkmnFastMoves = new ArrayList<>();
     ArrayList<PokemonChargedMoves> pkmnChargedMoves = new ArrayList<>();
 
+    //Recycler view adapter for main list
     PokemonCardDataHolder pkmnHolder;
 
     androidx.appcompat.widget.SearchView searchView;
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivity = this;
 
         //Find & Initialize views
         recyclerView = findViewById(R.id.recViewListOfPkmn);
@@ -140,35 +142,40 @@ public class MainActivity extends AppCompatActivity {
         Animation fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
         Animation toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
 
+        //Start up actions
         shimmerFrameLayout.startShimmer();
-
+        fabParent.setEnabled(false);
         setSupportActionBar(toolbar);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
-
+        //Load and set recyclerview with adapter
         setRecyclerView();
+
+        //Set up ModelView
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        mainActivityViewModel.init();
+        //Load Pokemon List if savedInstance exists else Load from API
+        if (savedInstanceState != null) {
+            pkmnList = savedInstanceState.getParcelableArrayList("mainList");
+            setRecyclerView();
+            PostLoadEffects();
+        } else {
+            mainActivityViewModel.init();
+        }
 
         mainActivityViewModel.getPkmnGenDataList().observe(this, new Observer<List<PokemonGeneralData>>() {
             @Override
             public void onChanged(List<PokemonGeneralData> pokemonGeneralData) {
-                if(pokemonGeneralData!=null){
+                if (pokemonGeneralData != null) {
                     pkmnList = new ArrayList<>(pokemonGeneralData);
                     pkmnHolder.setPokemonDataList((ArrayList<PokemonGeneralData>) pokemonGeneralData);
                 }
             }
         });
-
-
-        fabParent.setEnabled(false);
 
         //Get list from JSON source
         ExtractListOfPKMN();
@@ -228,8 +235,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO Look into LiveData and fix the favorite Icon Bug
         //TODO complete 3dot options
+    }
+
+    //To display error toast on network issue
+    public void DisplayErrorToast(){
+        Toast.makeText(MainActivity.this, "Something went wrong! Try again later.", Toast.LENGTH_SHORT).show();
+    }
+
+    //Everything do when the list is downloaded from API server
+    public void PostLoadEffects(){
+        fabParent.setEnabled(true);
+        isDataLoaded = true;
+        shimmerFrameLayout.stopShimmer();
+        shimmerFrameLayout.setVisibility(View.GONE);
+    }
+
+    //get Instance for this Activity (Use to call methods from this activity)(Deprecated)
+    public static MainActivity getInstance() {
+        return mainActivity;
+    }
+
+    //Save List to instance (Retains data on Activity destroying events)
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList("mainList", pkmnList);
     }
 
     public void setRecyclerView() {
@@ -466,7 +498,6 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("key", PokemonCardDataHolder.favoritePkmnList);
             intToGotoFav.putExtras(bundle);
-//            intToGotoFav.putExtra("key", (Serializable) pkmnHolder.favoritePkmnList);
             startActivity(intToGotoFav);
         }
         return super.onOptionsItemSelected(item);
@@ -519,12 +550,6 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl(JSON_Url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
-        fabParent.setEnabled(true);
-        isDataLoaded = true;
-        shimmerFrameLayout.stopShimmer();
-        shimmerFrameLayout.setVisibility(View.GONE);
-        //Assign to Adapter
 
         RequestInterfaceFastMoves requestInterfaceFastMoves = retrofit.create(RequestInterfaceFastMoves.class);
         Call<List<PokemonFastMoves>> call2 = requestInterfaceFastMoves.getFastMoveJSON();
