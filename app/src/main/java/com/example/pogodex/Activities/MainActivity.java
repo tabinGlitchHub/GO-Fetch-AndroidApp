@@ -30,30 +30,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pogodex.FavoriteMonActivity;
-import com.example.pogodex.Interfaces.RequestInterfaceChargedMoves;
-import com.example.pogodex.Interfaces.RequestInterfaceFastMoves;
+import com.example.pogodex.MainPokemonListAdapter;
 import com.example.pogodex.ModelClasses.PokemonChargedMoves;
 import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
-import com.example.pogodex.PokemonCardDataHolder;
 import com.example.pogodex.R;
 import com.example.pogodex.ViewModels.MainActivityViewModel;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -74,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean legendFilterApplied = false;
     private boolean shinyFilterApplied = false;
     private boolean isDataLoaded = false;
-    private PokemonCardDataHolder.ViewHolder viewHolder;
+    private MainPokemonListAdapter.ViewHolder viewHolder;
     private MainActivityViewModel mainActivityViewModel;
     private static MainActivity mainActivity;
 
@@ -115,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<PokemonChargedMoves> pkmnChargedMoves = new ArrayList<>();
 
     //Recycler view adapter for main list
-    PokemonCardDataHolder pkmnHolder;
+    MainPokemonListAdapter pkmnHolder;
 
     androidx.appcompat.widget.SearchView searchView;
 
@@ -153,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
         //Load and set recyclerview with adapter
-        setRecyclerView();
+        setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
 
         //Set up ModelView
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
@@ -161,24 +151,45 @@ public class MainActivity extends AppCompatActivity {
         //Load Pokemon List if savedInstance exists else Load from API
         if (savedInstanceState != null) {
             pkmnList = savedInstanceState.getParcelableArrayList("mainList");
-            setRecyclerView();
+
+            pkmnHolder.setPokemonDataList(pkmnList);
             PostLoadEffects();
         } else {
             mainActivityViewModel.init();
         }
 
+        //Observe and update generaldatachanges
         mainActivityViewModel.getPkmnGenDataList().observe(this, new Observer<List<PokemonGeneralData>>() {
             @Override
             public void onChanged(List<PokemonGeneralData> pokemonGeneralData) {
                 if (pokemonGeneralData != null) {
                     pkmnList = new ArrayList<>(pokemonGeneralData);
-                    pkmnHolder.setPokemonDataList((ArrayList<PokemonGeneralData>) pokemonGeneralData);
+                    setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
                 }
             }
         });
 
-        //Get list from JSON source
-        ExtractListOfPKMN();
+        //Observe and update fast moves
+        mainActivityViewModel.getPkmnFastMovesList().observe(this, new Observer<List<PokemonFastMoves>>() {
+            @Override
+            public void onChanged(List<PokemonFastMoves> pokemonFastMoves) {
+                if (pokemonFastMoves != null) {
+                    pkmnFastMoves = new ArrayList<>(pokemonFastMoves);
+                    setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
+                }
+            }
+        });
+
+        //Observe and update Charged moves
+        mainActivityViewModel.getPkmnChargedMovesList().observe(this, new Observer<List<PokemonChargedMoves>>() {
+            @Override
+            public void onChanged(List<PokemonChargedMoves> pokemonChargedMoves) {
+                if(pokemonChargedMoves != null){
+                    pkmnChargedMoves = new ArrayList<>(pokemonChargedMoves);
+                    setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
+                }
+            }
+        });
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
@@ -239,12 +250,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //To display error toast on network issue
-    public void DisplayErrorToast(){
+    public void DisplayErrorToast() {
         Toast.makeText(MainActivity.this, "Something went wrong! Try again later.", Toast.LENGTH_SHORT).show();
     }
 
     //Everything do when the list is downloaded from API server
-    public void PostLoadEffects(){
+    public void PostLoadEffects() {
         fabParent.setEnabled(true);
         isDataLoaded = true;
         shimmerFrameLayout.stopShimmer();
@@ -264,8 +275,10 @@ public class MainActivity extends AppCompatActivity {
         outState.putParcelableArrayList("mainList", pkmnList);
     }
 
-    public void setRecyclerView() {
-        pkmnHolder = new PokemonCardDataHolder(MainActivity.this, pkmnList, pkmnFastMoves, pkmnChargedMoves);
+    public void setRecyclerView(ArrayList<PokemonGeneralData> pkmnList,
+                                ArrayList<PokemonFastMoves> pkmnFastMoves,
+                                ArrayList<PokemonChargedMoves> pkmnChargedMoves) {
+        pkmnHolder = new MainPokemonListAdapter(MainActivity.this, pkmnList, pkmnFastMoves, pkmnChargedMoves);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(pkmnHolder);
     }
@@ -496,7 +509,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.favorites_item) {
             Intent intToGotoFav = new Intent(this, FavoriteMonActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("key", PokemonCardDataHolder.favoritePkmnList);
+            bundle.putParcelableArrayList("key", MainPokemonListAdapter.favoritePkmnList);
             intToGotoFav.putExtras(bundle);
             startActivity(intToGotoFav);
         }
@@ -540,44 +553,6 @@ public class MainActivity extends AppCompatActivity {
                     pkmnHolder.getFilter().filter(newText);
                 }
                 return false;
-            }
-        });
-    }
-
-    //Extract JSON data for Main screen layout
-    private void ExtractListOfPKMN() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(JSON_Url)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RequestInterfaceFastMoves requestInterfaceFastMoves = retrofit.create(RequestInterfaceFastMoves.class);
-        Call<List<PokemonFastMoves>> call2 = requestInterfaceFastMoves.getFastMoveJSON();
-
-        call2.enqueue(new Callback<List<PokemonFastMoves>>() {
-            @Override
-            public void onResponse(@NotNull Call<List<PokemonFastMoves>> call, @NotNull Response<List<PokemonFastMoves>> response) {
-                pkmnFastMoves = new ArrayList<>(response.body());
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<List<PokemonFastMoves>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Network Error!", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        RequestInterfaceChargedMoves requestInterfaceChargedMoves = retrofit.create(RequestInterfaceChargedMoves.class);
-        Call<List<PokemonChargedMoves>> call3 = requestInterfaceChargedMoves.getChargedMoveJSON();
-
-        call3.enqueue(new Callback<List<PokemonChargedMoves>>() {
-            @Override
-            public void onResponse(@NotNull Call<List<PokemonChargedMoves>> call, @NotNull Response<List<PokemonChargedMoves>> response) {
-                pkmnChargedMoves = new ArrayList<>(response.body());
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<List<PokemonChargedMoves>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Network Error!", Toast.LENGTH_LONG).show();
             }
         });
     }

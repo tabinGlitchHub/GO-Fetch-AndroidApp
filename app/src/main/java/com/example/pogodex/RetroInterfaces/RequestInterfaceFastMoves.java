@@ -1,4 +1,4 @@
-package com.example.pogodex.Interfaces;
+package com.example.pogodex.RetroInterfaces;
 
 import com.example.pogodex.ModelClasses.PokemonFastMoves;
 

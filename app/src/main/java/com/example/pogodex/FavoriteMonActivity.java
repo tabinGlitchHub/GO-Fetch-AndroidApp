@@ -1,6 +1,5 @@
 package com.example.pogodex;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -17,9 +16,9 @@ public class FavoriteMonActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TextView emptyWarnTxt;
-    PokemonCardDataHolder pkmnHolder = new PokemonCardDataHolder();
+    MainPokemonListAdapter pkmnHolder = new MainPokemonListAdapter();
     ArrayList<PokemonGeneralData> favListedMons = new ArrayList<>();
-    FavPokemonCardDataHolder favholder;
+    FavPokemonListAdapter favholder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class FavoriteMonActivity extends AppCompatActivity {
         }else{
             emptyWarnTxt.setVisibility(View.INVISIBLE);
             recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-            favholder = new FavPokemonCardDataHolder(FavoriteMonActivity.this, favListedMons);
+            favholder = new FavPokemonListAdapter(FavoriteMonActivity.this, favListedMons);
             recyclerView.setAdapter(favholder);
         }
     }

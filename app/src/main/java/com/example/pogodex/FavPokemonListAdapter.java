@@ -21,14 +21,14 @@ import com.example.pogodex.ModelClasses.PokemonGeneralData;
 
 import java.util.ArrayList;
 
-import static com.example.pogodex.PokemonCardDataHolder.favoritePkmnList;
+import static com.example.pogodex.MainPokemonListAdapter.favoritePkmnList;
 
-public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCardDataHolder.ViewHolder> {
+public class FavPokemonListAdapter extends RecyclerView.Adapter<FavPokemonListAdapter.ViewHolder> {
 
     ArrayList<PokemonGeneralData> favpkmnList;
     private Context context;
 
-    FavPokemonCardDataHolder(Context context, ArrayList<PokemonGeneralData> favpkmn) {
+    FavPokemonListAdapter(Context context, ArrayList<PokemonGeneralData> favpkmn) {
         this.context = context;
         this.favpkmnList = favoritePkmnList;
     }
@@ -37,7 +37,7 @@ public class FavPokemonCardDataHolder extends RecyclerView.Adapter<FavPokemonCar
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_pkmn_layout, parent, false);
-        FavPokemonCardDataHolder.ViewHolder holder = new FavPokemonCardDataHolder.ViewHolder(view);
+        FavPokemonListAdapter.ViewHolder holder = new FavPokemonListAdapter.ViewHolder(view);
         return holder;
     }
 

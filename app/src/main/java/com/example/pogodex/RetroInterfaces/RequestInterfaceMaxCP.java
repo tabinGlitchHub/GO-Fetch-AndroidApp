@@ -1,6 +1,5 @@
-package com.example.pogodex.Interfaces;
+package com.example.pogodex.RetroInterfaces;
 
-import com.example.pogodex.ModelClasses.PokemonGeneralData;
 import com.example.pogodex.ModelClasses.PokemonMaxCP;
 
 import java.util.List;
