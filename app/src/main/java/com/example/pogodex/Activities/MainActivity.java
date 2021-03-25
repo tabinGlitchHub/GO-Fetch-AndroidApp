@@ -142,23 +142,18 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
-        //Load and set recyclerview with adapter
-        setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
-
         //Set up ModelView
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         //Load Pokemon List if savedInstance exists else Load from API
         if (savedInstanceState != null) {
             pkmnList = savedInstanceState.getParcelableArrayList("mainList");
-
-            pkmnHolder.setPokemonDataList(pkmnList);
+            setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
             PostLoadEffects();
         } else {
             mainActivityViewModel.init();
         }
 
-        //Observe and update generaldatachanges
         mainActivityViewModel.getPkmnGenDataList().observe(this, new Observer<List<PokemonGeneralData>>() {
             @Override
             public void onChanged(List<PokemonGeneralData> pokemonGeneralData) {
@@ -169,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Observe and update fast moves
         mainActivityViewModel.getPkmnFastMovesList().observe(this, new Observer<List<PokemonFastMoves>>() {
             @Override
             public void onChanged(List<PokemonFastMoves> pokemonFastMoves) {
@@ -180,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Observe and update Charged moves
         mainActivityViewModel.getPkmnChargedMovesList().observe(this, new Observer<List<PokemonChargedMoves>>() {
             @Override
             public void onChanged(List<PokemonChargedMoves> pokemonChargedMoves) {

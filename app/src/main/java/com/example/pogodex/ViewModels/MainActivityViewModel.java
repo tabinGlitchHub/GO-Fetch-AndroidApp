@@ -40,11 +40,11 @@ public class MainActivityViewModel extends ViewModel {
         return pkmnGenDataList;
     }
 
-    public LiveData<List<PokemonFastMoves>> getPkmnFastMovesList(){
+    public LiveData<List<PokemonFastMoves>> getPkmnFastMovesList() {
         return pkmnFastMovesList;
     }
 
-    public LiveData<List<PokemonChargedMoves>> getPkmnChargedMovesList(){
+    public LiveData<List<PokemonChargedMoves>> getPkmnChargedMovesList() {
         return pkmnChargedMovesList;
     }
 
@@ -66,7 +66,7 @@ public class MainActivityViewModel extends ViewModel {
                 for (int i = 0; i < pkmnGenDataList.getValue().size(); ) {
                     if (pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Normal") || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Incarnate")
                             || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Ordinary") || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Aria")
-                            || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Galarian")|| pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Alola")
+                            || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Galarian") || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Alola")
                             || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Altered") || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Land")
                             || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Overcast") || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("East_sea")
                             || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Purified") || pkmnGenDataList.getValue().get(i).get_pokemonForm().equals("Shadow")) {
@@ -85,7 +85,7 @@ public class MainActivityViewModel extends ViewModel {
         });
     }
 
-    public void fetchFastMoves(){
+    public void fetchFastMoves() {
         RequestInterfaceFastMoves requestInterfaceFM = RetroInstance.getRetrofitClient().create(RequestInterfaceFastMoves.class);
         Call<List<PokemonFastMoves>> call2 = requestInterfaceFM.getFastMoveJSON();
 

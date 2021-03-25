@@ -204,9 +204,6 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
                     bundle.putParcelableArrayList("cm",pkmnChargedMoves);
                     bundle.putParcelable("id",pokemonDataList.get(getAdapterPosition()));
                     intent.putExtras(bundle);
-//                    intent.putExtra("id",(Serializable) pokemonDataList.get(getAdapterPosition()));
-//                    intent.putExtra("fm",(Serializable) pkmnFastMoves);
-//                    intent.putExtra("cm",(Serializable) pkmnChargedMoves);
                     context.startActivity(intent);
                 }
             });
