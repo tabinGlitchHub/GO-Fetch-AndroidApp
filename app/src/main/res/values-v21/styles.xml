@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/classic_red</item>
         <item name="colorPrimaryVariant">@color/classic_red</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
+<!--        <item name="android:textColorPrimary">@color/white</item>-->
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/white</item>

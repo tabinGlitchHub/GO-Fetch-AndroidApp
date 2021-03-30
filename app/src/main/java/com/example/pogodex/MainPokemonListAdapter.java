@@ -26,11 +26,10 @@ import com.example.pogodex.ModelClasses.PokemonChargedMoves;
 import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataHolder.ViewHolder> implements Filterable {
+public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonListAdapter.ViewHolder> implements Filterable {
 
     private ArrayList<PokemonGeneralData> pokemonDataList;
     private ArrayList<PokemonGeneralData> pokemonDataListCopy;
@@ -41,8 +40,8 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
     private Context context;
     int curveRadius = 25;
 
-    public PokemonCardDataHolder(Context context, ArrayList<PokemonGeneralData> pokemonDataList, ArrayList<PokemonFastMoves> FastMoves
-                                    ,ArrayList<PokemonChargedMoves> ChargedMoves) {
+    public MainPokemonListAdapter(Context context, ArrayList<PokemonGeneralData> pokemonDataList, ArrayList<PokemonFastMoves> FastMoves
+                                    , ArrayList<PokemonChargedMoves> ChargedMoves) {
         this.context = context;
         this.pokemonDataList = pokemonDataList;
         pokemonDataListCopy = new ArrayList<>(pokemonDataList);
@@ -50,7 +49,7 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
         this.pkmnChargedMoves = ChargedMoves;
     }
 
-    public PokemonCardDataHolder() {
+    public MainPokemonListAdapter() {
     }
 
     public ArrayList<PokemonGeneralData> getFavoritePkmnList() {
@@ -104,7 +103,10 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
 
     @Override
     public int getItemCount() {
-        return pokemonDataList.size();
+        if(pokemonDataList != null){
+            return pokemonDataList.size();
+        }
+        return 0;
     }
 
     public void setPokemonDataList(ArrayList<PokemonGeneralData> pokemonDataList) {
@@ -202,9 +204,6 @@ public class PokemonCardDataHolder extends RecyclerView.Adapter<PokemonCardDataH
                     bundle.putParcelableArrayList("cm",pkmnChargedMoves);
                     bundle.putParcelable("id",pokemonDataList.get(getAdapterPosition()));
                     intent.putExtras(bundle);
-//                    intent.putExtra("id",(Serializable) pokemonDataList.get(getAdapterPosition()));
-//                    intent.putExtra("fm",(Serializable) pkmnFastMoves);
-//                    intent.putExtra("cm",(Serializable) pkmnChargedMoves);
                     context.startActivity(intent);
                 }
             });

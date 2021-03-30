@@ -1,6 +1,5 @@
-package com.example.pogodex.Interfaces;
+package com.example.pogodex.RetroInterfaces;
 
-import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.SelectedPokemonMoves;
 
 import java.util.List;

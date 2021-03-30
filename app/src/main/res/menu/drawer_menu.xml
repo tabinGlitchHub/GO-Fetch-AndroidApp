@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
@@ -8,7 +7,7 @@
         <menu>
             <item
                 android:id="@+id/trainerName"
-                android:title="First Name" />
+                android:title="User Name" />
             <item
                 android:id="@+id/trainerLevel"
                 android:title="Level" />
