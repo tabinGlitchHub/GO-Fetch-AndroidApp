@@ -218,6 +218,8 @@ public class DexActivity extends AppCompatActivity implements ViewTreeObserver.O
         //Calculate the BG
         setDexBG();
 
+        //TODO Implement SQLite to store pokemon info
+
     }
 
     //getInstance of this activity to call methods (only to be called from ViewModel of this activity)
