@@ -3,6 +3,8 @@ package com.example.pogodex.ModelClasses;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+
 import com.example.pogodex.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -104,10 +106,7 @@ public class PokemonGeneralData implements Parcelable {
     }
 
     public String get_pokemonImage() {
-        for (int i = 0; i < 725; i++) {
-            pkmnSprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vii/ultra-sun-ultra-moon/" + get_pokemonID() + ".png";
-        }
-        return pkmnSprite;
+        return pkmnSprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vii/ultra-sun-ultra-moon/" + get_pokemonID() + ".png";
     }
 
     public Integer get_background() {
@@ -226,6 +225,7 @@ public class PokemonGeneralData implements Parcelable {
         dest.writeString(_pokemonForm);
         dest.writeStringArray(_pokemonTypes);
     }
+
     public PokemonGeneralData(Parcel in) {
         _pokemonName = in.readString();
         _pokemonID = in.readString();

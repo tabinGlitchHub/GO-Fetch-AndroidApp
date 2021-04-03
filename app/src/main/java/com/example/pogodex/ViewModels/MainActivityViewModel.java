@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pogodex.Activities.MainActivity;
+import com.example.pogodex.ModelClasses.FavoritePokemon;
 import com.example.pogodex.ModelClasses.PokemonChargedMoves;
 import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.RetroInterfaces.RequestInterface;
@@ -26,14 +27,16 @@ import retrofit2.Response;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private MutableLiveData<List<PokemonGeneralData>> pkmnGenDataList;
-    private MutableLiveData<List<PokemonFastMoves>> pkmnFastMovesList;
-    private MutableLiveData<List<PokemonChargedMoves>> pkmnChargedMovesList;
+    private final MutableLiveData<List<PokemonGeneralData>> pkmnGenDataList;
+    private final MutableLiveData<List<PokemonFastMoves>> pkmnFastMovesList;
+    private final MutableLiveData<List<PokemonChargedMoves>> pkmnChargedMovesList;
+    private final MutableLiveData<List<FavoritePokemon>> favMonsList;
 
     public MainActivityViewModel() {
         pkmnGenDataList = new MutableLiveData<>();
         pkmnFastMovesList = new MutableLiveData<>();
         pkmnChargedMovesList = new MutableLiveData<>();
+        favMonsList = new MutableLiveData<>();
     }
 
     public LiveData<List<PokemonGeneralData>> getPkmnGenDataList() {
@@ -48,10 +51,18 @@ public class MainActivityViewModel extends ViewModel {
         return pkmnChargedMovesList;
     }
 
+    public LiveData<List<FavoritePokemon>> getFavMonsList() {
+        return favMonsList;
+    }
+
     public void init() {
         fetchGeneralData();
         fetchFastMoves();
         fetchChargedMoves();
+    }
+
+    public void test(){
+        System.out.println("ping");
     }
 
     public void fetchGeneralData() {

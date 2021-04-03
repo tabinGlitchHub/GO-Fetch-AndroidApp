@@ -22,9 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.pogodex.Activities.DexActivity;
+import com.example.pogodex.Activities.MainActivity;
+import com.example.pogodex.ModelClasses.FavoritePokemon;
 import com.example.pogodex.ModelClasses.PokemonChargedMoves;
 import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
+import com.example.pogodex.ViewModels.FavActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +36,17 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
 
     private ArrayList<PokemonGeneralData> pokemonDataList;
     private ArrayList<PokemonGeneralData> pokemonDataListCopy;
-    ArrayList<PokemonFastMoves> pkmnFastMoves = new ArrayList<>();
-    ArrayList<PokemonChargedMoves> pkmnChargedMoves = new ArrayList<>();
+    private ArrayList<PokemonFastMoves> pkmnFastMoves = new ArrayList<>();
+    private ArrayList<PokemonChargedMoves> pkmnChargedMoves = new ArrayList<>();
+    private final MainActivity mainActivity = MainActivity.getInstance();
+    private List<FavoritePokemon> favList = mainActivity.favoritePokemonList;
 
     public static ArrayList<PokemonGeneralData> favoritePkmnList = new ArrayList<>(20);
     private Context context;
     int curveRadius = 25;
 
     public MainPokemonListAdapter(Context context, ArrayList<PokemonGeneralData> pokemonDataList, ArrayList<PokemonFastMoves> FastMoves
-                                    , ArrayList<PokemonChargedMoves> ChargedMoves) {
+            , ArrayList<PokemonChargedMoves> ChargedMoves) {
         this.context = context;
         this.pokemonDataList = pokemonDataList;
         pokemonDataListCopy = new ArrayList<>(pokemonDataList);
@@ -103,7 +108,7 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
 
     @Override
     public int getItemCount() {
-        if(pokemonDataList != null){
+        if (pokemonDataList != null) {
             return pokemonDataList.size();
         }
         return 0;
@@ -149,19 +154,20 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
         }
     };
 
-    private boolean containmentCheck(String toThis) {
-        for (int i = 0; i < favoritePkmnList.size(); i++) {
-            if (favoritePkmnList.get(i).get_pokemonID().equals(toThis)) {
-                return true;
+    public void removeFavorite(FavoritePokemon fp) {
+        for (int i = 0; i < favList.size(); i++) {
+            if (fp.get_favPokemonID().equals(favList.get(i).get_favPokemonID())
+                    && fp.get_favPokemonForm().equals(favList.get(i).get_favPokemonForm())) {
+                favList.remove(i);
             }
         }
-        return false;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView pokemonName, pokemonID;
-        private final ImageView pokemonImg, pokemonBG, typeOne, typeTwo, formIcon;;
+        private final ImageView pokemonImg, pokemonBG, typeOne, typeTwo, formIcon;
+        ;
         private RelativeLayout parent;
         public Button favBtn;
 
@@ -183,13 +189,20 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     PokemonGeneralData pkData = pokemonDataList.get(position);
-                    if (!pkData.isFavorite() || !containmentCheck(pkData.get_pokemonID())) {
+                    FavoritePokemon favoritePokemon = new FavoritePokemon();
+                    favoritePokemon.set_favPokemonName(pkData.get_pokemonName());
+                    favoritePokemon.set_favPokemonID(pkData.get_pokemonID());
+                    favoritePokemon.set_favPokemonForm(pkData.get_pokemonForm());
+                    favoritePokemon.set_favPokemonType1(pkData.get_pokemonType1());
+                    favoritePokemon.set_favPokemonType2(pkData.get_pokemonType2());
+
+                    if (!pkData.isFavorite()) {
                         pkData.setFavorite(true);
-                        favoritePkmnList.add(pkData);
+                        favList.add(favoritePokemon);
                         favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_selected_foreground);
                     } else {
                         pkData.setFavorite(false);
-                        favoritePkmnList.remove(pkData);
+                        removeFavorite(favoritePokemon);
                         favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_deselected_foreground);
                     }
                 }
@@ -200,9 +213,9 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
                 public void onClick(View v) {
                     Intent intent = new Intent(parent.getContext(), DexActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("fm",pkmnFastMoves);
-                    bundle.putParcelableArrayList("cm",pkmnChargedMoves);
-                    bundle.putParcelable("id",pokemonDataList.get(getAdapterPosition()));
+                    bundle.putParcelableArrayList("fm", pkmnFastMoves);
+                    bundle.putParcelableArrayList("cm", pkmnChargedMoves);
+                    bundle.putParcelable("id", pokemonDataList.get(getAdapterPosition()));
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }

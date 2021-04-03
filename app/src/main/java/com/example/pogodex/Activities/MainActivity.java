@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pogodex.FavoriteMonActivity;
 import com.example.pogodex.MainPokemonListAdapter;
+import com.example.pogodex.ModelClasses.FavoritePokemon;
 import com.example.pogodex.ModelClasses.PokemonChargedMoves;
 import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean shinyFilterApplied = false;
     private boolean isDataLoaded = false;
     private MainPokemonListAdapter.ViewHolder viewHolder;
-    private MainActivityViewModel mainActivityViewModel;
+    public MainActivityViewModel mainActivityViewModel;
     private static MainActivity mainActivity;
 
     //indexed list for Filter purpose.
@@ -103,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     //To store fast and Charged moves
     ArrayList<PokemonFastMoves> pkmnFastMoves = new ArrayList<>();
     ArrayList<PokemonChargedMoves> pkmnChargedMoves = new ArrayList<>();
+
+    public ArrayList<FavoritePokemon> favoritePokemonList = new ArrayList<>();
 
     //Recycler view adapter for main list
     MainPokemonListAdapter pkmnHolder;
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         //Load Pokemon List if savedInstance exists else Load from API
         if (savedInstanceState != null) {
             pkmnList = savedInstanceState.getParcelableArrayList("mainList");
-            setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
+            setRecyclerView(pkmnList, pkmnFastMoves, pkmnChargedMoves);
             PostLoadEffects();
         } else {
             mainActivityViewModel.init();
@@ -159,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<PokemonGeneralData> pokemonGeneralData) {
                 if (pokemonGeneralData != null) {
                     pkmnList = new ArrayList<>(pokemonGeneralData);
-                    setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
+                    setRecyclerView(pkmnList, pkmnFastMoves, pkmnChargedMoves);
                 }
             }
         });
@@ -169,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<PokemonFastMoves> pokemonFastMoves) {
                 if (pokemonFastMoves != null) {
                     pkmnFastMoves = new ArrayList<>(pokemonFastMoves);
-                    setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
+                    setRecyclerView(pkmnList, pkmnFastMoves, pkmnChargedMoves);
                 }
             }
         });
@@ -177,9 +180,18 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel.getPkmnChargedMovesList().observe(this, new Observer<List<PokemonChargedMoves>>() {
             @Override
             public void onChanged(List<PokemonChargedMoves> pokemonChargedMoves) {
-                if(pokemonChargedMoves != null){
+                if (pokemonChargedMoves != null) {
                     pkmnChargedMoves = new ArrayList<>(pokemonChargedMoves);
-                    setRecyclerView(pkmnList,pkmnFastMoves,pkmnChargedMoves);
+                    setRecyclerView(pkmnList, pkmnFastMoves, pkmnChargedMoves);
+                }
+            }
+        });
+
+        mainActivityViewModel.getFavMonsList().observe(this, new Observer<List<FavoritePokemon>>() {
+            @Override
+            public void onChanged(List<FavoritePokemon> favoritePokemons) {
+                if (favoritePokemons != null) {
+                    favoritePokemonList = new ArrayList<>(favoritePokemons);
                 }
             }
         });
@@ -502,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.favorites_item) {
             Intent intToGotoFav = new Intent(this, FavoriteMonActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("key", MainPokemonListAdapter.favoritePkmnList);
+            bundle.putParcelableArrayList("favList", favoritePokemonList);
             intToGotoFav.putExtras(bundle);
             startActivity(intToGotoFav);
         }

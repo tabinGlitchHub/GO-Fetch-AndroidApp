@@ -17,7 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.pogodex.Activities.MainActivity;
+import com.example.pogodex.ModelClasses.FavoritePokemon;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
+import com.example.pogodex.ViewModels.FavActivityViewModel;
+import com.example.pogodex.ViewModels.MainActivityViewModel;
 
 import java.util.ArrayList;
 
@@ -25,94 +29,77 @@ import static com.example.pogodex.MainPokemonListAdapter.favoritePkmnList;
 
 public class FavPokemonListAdapter extends RecyclerView.Adapter<FavPokemonListAdapter.ViewHolder> {
 
-    ArrayList<PokemonGeneralData> favpkmnList;
-    private Context context;
+    private ArrayList<FavoritePokemon> favpkmnList;
+    private final Context context;
 
-    FavPokemonListAdapter(Context context, ArrayList<PokemonGeneralData> favpkmn) {
+    FavPokemonListAdapter(Context context, ArrayList<FavoritePokemon> favpkmn) {
         this.context = context;
-        this.favpkmnList = favoritePkmnList;
+        this.favpkmnList = favpkmn;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_pkmn_layout, parent, false);
-        FavPokemonListAdapter.ViewHolder holder = new FavPokemonListAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_favpkmn_layout, parent, false);
+        FavPokemonListAdapter.ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.favBtn.setTag(position);
-        int colorid = favpkmnList.get(position).get_background();
-        Drawable color = holder.parent.getContext().getDrawable(colorid);
-        holder.parent.setBackground(color);
-        holder.pokemonName.setText(favpkmnList.get(position).get_pokemonName());
-        holder.pokemonID.setText(favpkmnList.get(position).get_pokemonID());
+        holder.favMonName.setText(favpkmnList.get(position).get_favPokemonName());
 
         Glide.with(context)
                 .asBitmap()
-                .load(favpkmnList.get(position).get_pokemonImage())
-                .into(holder.pokemonImg);
+                .load(favpkmnList.get(position).get_favPokemonImage())
+                .into(holder.favMonImg);
 
         Glide.with(context)
                 .asBitmap()
-                .load(favpkmnList.get(position).get_pokemonType())
-                .transform(new RoundedCorners(44))
-                .into(holder.pokemonBG);
-
-        Glide.with(context)
-                .asBitmap()
-                .load(favpkmnList.get(position).get_pokemonType1())
+                .load(favpkmnList.get(position).get_favPokemonType1())
                 .into(holder.typeOne);
 
         Glide.with(context)
                 .asBitmap()
-                .load(favpkmnList.get(position).get_pokemonType2())
+                .load(favpkmnList.get(position).get_favPokemonType2())
                 .into(holder.typeTwo);
     }
 
     @Override
     public int getItemCount() {
-        return favpkmnList.size();
+        if (favpkmnList != null) {
+            return favpkmnList.size();
+        }
+        return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView pokemonName;
-        private TextView pokemonID;
-        private ImageView pokemonImg;
-        private ImageView pokemonBG;
-        private ImageView typeOne;
-        private ImageView typeTwo;
-        private RelativeLayout parent;
-        private Button favBtn;
+        private final TextView favMonName;
+        private final ImageView favMonImg;
+        private final ImageView typeOne;
+        private final ImageView typeTwo;
+        private final Button favBTN;
+        MainActivity mainActivity = MainActivity.getInstance();
+        MainActivityViewModel mainActivityViewModel = mainActivity.mainActivityViewModel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            pokemonName = itemView.findViewById(R.id.pkmnName);
-            pokemonID = itemView.findViewById(R.id.pkmnID);
-            pokemonImg = itemView.findViewById(R.id.pkmnImage);
-            pokemonBG = itemView.findViewById(R.id.pkmnBackG);
-            typeOne = itemView.findViewById(R.id.type1Icon);
-            typeTwo = itemView.findViewById(R.id.type2Icon);
-            parent = itemView.findViewById(R.id.pkmnCard);
-            favBtn = itemView.findViewById(R.id.favoriteBTN);
+            favMonName = itemView.findViewById(R.id.favMonTxt);
+            favMonImg = itemView.findViewById(R.id.favMonImg);
+            typeOne = itemView.findViewById(R.id.favMonType1);
+            typeTwo = itemView.findViewById(R.id.favMonType2);
+            favBTN = itemView.findViewById(R.id.favoriteBTN2);
 
-            favBtn.setBackgroundResource(R.mipmap.ic_fav_pb_btn_selected_foreground);
-
-            favBtn.setOnClickListener(new View.OnClickListener() {
+            favBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = (int) favBtn.getTag();
-                    PokemonGeneralData pkData = favpkmnList.get(position);
-                    pkData.setFavorite(false);
-                    favpkmnList.remove(pkData);
-                    notifyDataSetChanged();
+                    mainActivityViewModel.test();
                 }
             });
+
         }
     }
 }

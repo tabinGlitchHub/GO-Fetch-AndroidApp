@@ -104,7 +104,6 @@
                 android:layout_height="35dp"
                 android:layout_marginStart="80dp"
                 android:layout_marginRight="10dp"
-                android:visibility="gone"
                 android:background="@mipmap/ic_fav_pb_btn_deselected_foreground" />
 
         </RelativeLayout>
