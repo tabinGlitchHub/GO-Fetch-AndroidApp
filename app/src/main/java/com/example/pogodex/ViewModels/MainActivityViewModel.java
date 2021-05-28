@@ -61,10 +61,6 @@ public class MainActivityViewModel extends ViewModel {
         fetchChargedMoves();
     }
 
-    public void test(){
-        System.out.println("ping");
-    }
-
     public void fetchGeneralData() {
         RequestInterface requestInterface = RetroInstance.getRetrofitClient().create(RequestInterface.class);
         Call<List<PokemonGeneralData>> call = requestInterface.getPokeJSON();

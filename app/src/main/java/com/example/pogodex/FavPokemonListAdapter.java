@@ -29,7 +29,7 @@ import static com.example.pogodex.MainPokemonListAdapter.favoritePkmnList;
 
 public class FavPokemonListAdapter extends RecyclerView.Adapter<FavPokemonListAdapter.ViewHolder> {
 
-    private ArrayList<FavoritePokemon> favpkmnList;
+    private static ArrayList<FavoritePokemon> favpkmnList;
     private final Context context;
 
     FavPokemonListAdapter(Context context, ArrayList<FavoritePokemon> favpkmn) {
@@ -81,8 +81,8 @@ public class FavPokemonListAdapter extends RecyclerView.Adapter<FavPokemonListAd
         private final ImageView typeOne;
         private final ImageView typeTwo;
         private final Button favBTN;
-        MainActivity mainActivity = MainActivity.getInstance();
-        MainActivityViewModel mainActivityViewModel = mainActivity.mainActivityViewModel;
+        FavoriteMonActivity favoriteMonActivity = FavoriteMonActivity.getInstance();
+        FavActivityViewModel favActivityViewModel = favoriteMonActivity.favActivityViewModel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +96,9 @@ public class FavPokemonListAdapter extends RecyclerView.Adapter<FavPokemonListAd
             favBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mainActivityViewModel.test();
+                    int position = getAdapterPosition();
+                    FavoritePokemon favoritePokemon = favpkmnList.get(position);
+                    favActivityViewModel.removeFav(favoritePokemon);
                 }
             });
 
