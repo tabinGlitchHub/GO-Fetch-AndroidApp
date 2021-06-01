@@ -1,7 +1,10 @@
 package com.example.pogodex.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -21,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -39,6 +44,9 @@ import com.example.pogodex.R;
 import com.example.pogodex.ViewModels.MainActivityViewModel;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +55,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public RecyclerView recyclerView;
     private FloatingActionButton fabParent, fabCh1, fabCh2;
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup radioGroupOfSort;
     private RadioGroup radioGroupFilter;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private NavigationView navView;
     private boolean legendFilterApplied = false;
     private boolean shinyFilterApplied = false;
     private boolean isDataLoaded = false;
@@ -112,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
 
     androidx.appcompat.widget.SearchView searchView;
 
+    SharedPreferences appSettingPrefs;
+    SharedPreferences.Editor sharedPrefsEdit;
+    Boolean isNightModeOn;
 
+
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
         shimmerFrameLayout = findViewById(R.id.shimmer_layout);
-        searchView = (androidx.appcompat.widget.SearchView) findViewById(R.id.searchView);
+        searchView = findViewById(R.id.searchView);
+        navView = findViewById(R.id.navLay);
 
         //Animations initialization
         Animation rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
@@ -139,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         shimmerFrameLayout.startShimmer();
         fabParent.setEnabled(false);
         setSupportActionBar(toolbar);
+        navView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -148,13 +164,20 @@ public class MainActivity extends AppCompatActivity {
         //Set up ModelView
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
+        appSettingPrefs = getSharedPreferences("AppSettingPrefs", 0);
+        sharedPrefsEdit = appSettingPrefs.edit();
+
         //Load Pokemon List if savedInstance exists else Load from API
+        //Load saved Instance of theme boolean else set false by default
         if (savedInstanceState != null) {
             pkmnList = savedInstanceState.getParcelableArrayList("mainList");
             setRecyclerView(pkmnList, pkmnFastMoves, pkmnChargedMoves);
             PostLoadEffects();
+            isNightModeOn = savedInstanceState.getBoolean("themeMode");
+
         } else {
             mainActivityViewModel.init();
+            isNightModeOn = appSettingPrefs.getBoolean("NightMode", false);
         }
 
         mainActivityViewModel.getPkmnGenDataList().observe(this, new Observer<List<PokemonGeneralData>>() {
@@ -254,6 +277,39 @@ public class MainActivity extends AppCompatActivity {
         //TODO complete 3dot options
     }
 
+    //Actions to be done when any menu item in drawer is clicked
+    @Override
+    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+        //check which item clicked
+        switch (item.getItemId()) {
+            //if 'Change to Night/Light' clicked check which theme is active
+            // and update UI accordingly
+            case R.id.change_theme_toggle:
+                if (isNightModeOn) {
+                    item.setIcon(R.drawable.ic_night_theme);
+                    item.setTitle("Change to Night");
+                    sharedPrefsEdit.putBoolean("NightMode", false);
+                    isNightModeOn = false;
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    item.setIcon(R.drawable.ic_day_theme);
+                    item.setTitle("Change to Light");
+                    sharedPrefsEdit.putBoolean("NightMode", true);
+                    isNightModeOn = true;
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                break;
+            //TODO: remaining menuitem actions
+            case R.id.dittoChartOpt:
+                System.out.println("ditto button clicked");
+                break;
+            default:
+                System.out.println("nothing");
+                break;
+        }
+        return true;
+    }
+
     //To display error toast on network issue
     public void DisplayErrorToast() {
         Toast.makeText(MainActivity.this, "Something went wrong! Try again later.", Toast.LENGTH_SHORT).show();
@@ -278,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         outState.putParcelableArrayList("mainList", pkmnList);
+        outState.putBoolean("themeMode",isNightModeOn);
     }
 
     public void setRecyclerView(ArrayList<PokemonGeneralData> pkmnList,

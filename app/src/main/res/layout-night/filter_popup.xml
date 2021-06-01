@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/curve_corner_card_night"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="Filter by"
+        android:textColor="@color/prime_theme"
+        android:textSize="20dp" />
+
+    <RadioGroup
+        android:id="@+id/radGrpFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <RadioButton
+            android:id="@+id/radLegBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:buttonTint="@color/prime_theme"
+            android:checked="true"
+            android:layoutDirection="rtl"
+            android:paddingRight="50dp"
+            android:text="Legendaries/Mythicals"
+            android:textAlignment="textStart"
+            tools:ignore="RtlCompat"
+            android:onClick="checkButton2"/>
+
+        <RadioButton
+            android:id="@+id/radShinBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/prime_theme"
+            android:layoutDirection="rtl"
+            android:paddingRight="86dp"
+            android:text="Available Shinies"
+            android:textAlignment="textStart"
+            tools:ignore="RtlCompat"
+            android:onClick="checkButton2"/>
+
+        <RadioButton
+            android:id="@+id/radNestBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/prime_theme"
+            android:layoutDirection="rtl"
+            android:paddingRight="106dp"
+            android:text="Nesting Mons"
+            android:textAlignment="textStart"
+            tools:ignore="RtlCompat"
+            android:onClick="checkButton2"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/applyFiltBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/curve_corner_button_all"
+            android:text="Apply"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

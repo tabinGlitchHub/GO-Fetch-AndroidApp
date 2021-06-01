@@ -2,6 +2,8 @@ package com.example.pogodex;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import com.example.pogodex.ModelClasses.PokemonFastMoves;
 import com.example.pogodex.ModelClasses.PokemonGeneralData;
 import com.example.pogodex.ViewModels.FavActivityViewModel;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,36 +75,28 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int colorid = pokemonDataList.get(position).get_background();
-        Drawable color = holder.parent.getContext().getDrawable(colorid);
-        holder.parent.setBackground(color);
-        holder.pokemonName.setText(pokemonDataList.get(position).get_pokemonName());
-        holder.pokemonID.setText(pokemonDataList.get(position).get_pokemonID());
+        PokemonGeneralData thisMon = pokemonDataList.get(position);
+        holder.pokemonName.setText(thisMon.get_pokemonName());
+        holder.pokemonID.setText("#" + thisMon.get_pokemonID());
 
         Glide.with(context)
                 .asBitmap()
-                .load(pokemonDataList.get(position).get_pokemonImage())
+                .load(thisMon.get_pokemonImage())
                 .into(holder.pokemonImg);
 
         Glide.with(context)
                 .asBitmap()
-                .load(pokemonDataList.get(position).get_pokemonType())
-                .transform(new RoundedCorners(curveRadius))
-                .into(holder.pokemonBG);
-
-        Glide.with(context)
-                .asBitmap()
-                .load(pokemonDataList.get(position).get_pokemonType1())
+                .load(thisMon.get_pokemonType1())
                 .into(holder.typeOne);
 
         Glide.with(context)
                 .asBitmap()
-                .load(pokemonDataList.get(position).get_pokemonType2())
+                .load(thisMon.get_pokemonType2())
                 .into(holder.typeTwo);
 
         Glide.with(context)
                 .asBitmap()
-                .load(pokemonDataList.get(position).get_form())
+                .load(thisMon.get_form())
                 .into(holder.formIcon);
     }
 
@@ -166,8 +161,7 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView pokemonName, pokemonID;
-        private final ImageView pokemonImg, pokemonBG, typeOne, typeTwo, formIcon;
-        ;
+        private final ImageView pokemonImg /* ,pokemonBG*/, typeOne, typeTwo, formIcon;
         private RelativeLayout parent;
         public Button favBtn;
 
@@ -177,7 +171,7 @@ public class MainPokemonListAdapter extends RecyclerView.Adapter<MainPokemonList
             pokemonName = itemView.findViewById(R.id.pkmnName);
             pokemonID = itemView.findViewById(R.id.pkmnID);
             pokemonImg = itemView.findViewById(R.id.pkmnImage);
-            pokemonBG = itemView.findViewById(R.id.pkmnBackG);
+//            pokemonBG = itemView.findViewById(R.id.pkmnBackG);
             typeOne = itemView.findViewById(R.id.type1Icon);
             typeTwo = itemView.findViewById(R.id.type2Icon);
             favBtn = itemView.findViewById(R.id.favoriteBTN);

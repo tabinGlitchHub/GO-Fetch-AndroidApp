@@ -31,26 +31,26 @@ public class PokemonGeneralData implements Parcelable {
 
     private boolean isFavorite;
 
-    private String[] typeList = {
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_bug.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dark.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dragon.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_electric.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fairy.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fighting.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fire.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_flying.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ghost.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_grass.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ground.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ice.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_normal.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_poison.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_psychic.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_rock.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_steel.png",
-            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_water.png"
-    };
+//    private String[] typeList = {
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_bug.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dark.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dragon.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_electric.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fairy.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fighting.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fire.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_flying.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ghost.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_grass.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ground.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ice.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_normal.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_poison.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_psychic.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_rock.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_steel.png",
+//            "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_water.png"
+//    };
 
     private String[] ofForm = {
             "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Rocket/ic_shadow.png",
@@ -84,15 +84,15 @@ public class PokemonGeneralData implements Parcelable {
 
     private String pkmnSprite = new String();
 
-    private Integer[] colorsForBG = {
-            R.drawable.card_gradient_bug, R.drawable.card_gradient_dark, R.drawable.card_gradient_dragon,
-            R.drawable.card_gradient_electric, R.drawable.card_gradient_fairy, R.drawable.card_gradient_fightng,
-            R.drawable.card_gradient_fire, R.drawable.card_gradient_flyng, R.drawable.card_gradient_ghost,
-            R.drawable.card_gradient_grass, R.drawable.card_gradient_ground, R.drawable.card_gradient_ice,
-            R.drawable.card_gradient_normal, R.drawable.card_gradient_poison, R.drawable.card_gradient_psychic,
-            R.drawable.card_gradient_rock, R.drawable.card_gradient_steel, R.drawable.card_gradient_water,
-            R.drawable.card_gradient_purified, R.drawable.card_gradient_shadow
-    };
+//    private Integer[] colorsForBG = {
+//            R.drawable.card_gradient_bug, R.drawable.card_gradient_dark, R.drawable.card_gradient_dragon,
+//            R.drawable.card_gradient_electric, R.drawable.card_gradient_fairy, R.drawable.card_gradient_fightng,
+//            R.drawable.card_gradient_fire, R.drawable.card_gradient_flyng, R.drawable.card_gradient_ghost,
+//            R.drawable.card_gradient_grass, R.drawable.card_gradient_ground, R.drawable.card_gradient_ice,
+//            R.drawable.card_gradient_normal, R.drawable.card_gradient_poison, R.drawable.card_gradient_psychic,
+//            R.drawable.card_gradient_rock, R.drawable.card_gradient_steel, R.drawable.card_gradient_water,
+//            R.drawable.card_gradient_purified, R.drawable.card_gradient_shadow
+//    };
 
     public String get_form() {
         switch (_pokemonForm) {
@@ -109,32 +109,32 @@ public class PokemonGeneralData implements Parcelable {
         return pkmnSprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vii/ultra-sun-ultra-moon/" + get_pokemonID() + ".png";
     }
 
-    public Integer get_background() {
-        for (int i = 0; i <= 19; i++) {
-            if (_pokemonForm.equals("Purified")) {
-                return colorsForBG[18];
-            } else if (_pokemonForm.equals("Shadow")) {
-                return colorsForBG[19];
-            } else if (_pokemonTypes[0].equals(typeOf[i])) {
-                return colorsForBG[i];
-            }
-        }
-        return null;
-    }
+//    public Integer get_background() {
+//        for (int i = 0; i <= 19; i++) {
+//            if (_pokemonForm.equals("Purified")) {
+//                return colorsForBG[18];
+//            } else if (_pokemonForm.equals("Shadow")) {
+//                return colorsForBG[19];
+//            } else if (_pokemonTypes[0].equals(typeOf[i])) {
+//                return colorsForBG[i];
+//            }
+//        }
+//        return null;
+//    }
 
     //get the primary type of mon to draw Background with Glide
-    public String get_pokemonType() {
-        for (int i = 0; i <= 19; i++) {
-            if (_pokemonForm.equals("Purified")) {
-                return null;
-            } else if (_pokemonForm.equals("Shadow")) {
-                return null;
-            } else if (_pokemonTypes[0].equals(typeOf[i])) {
-                return typeList[i];
-            }
-        }
-        return null;
-    }
+//    public String get_pokemonType() {
+//        for (int i = 0; i <= 19; i++) {
+//            if (_pokemonForm.equals("Purified")) {
+//                return null;
+//            } else if (_pokemonForm.equals("Shadow")) {
+//                return null;
+//            } else if (_pokemonTypes[0].equals(typeOf[i])) {
+//                return typeList[i];
+//            }
+//        }
+//        return null;
+//    }
 
     public String get_pokemonTypeString() {
         for (int i = 0; i <= 18; i++) {

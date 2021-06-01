@@ -35,4 +35,11 @@
             android:title="Settings" />
     </group>
 
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/change_theme_toggle"
+            android:icon="@drawable/ic_night_theme"
+            android:title="Change to Night" />
+    </group>
+
 </menu>

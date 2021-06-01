@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:background="@color/classic_red"
+    android:background="@color/prime_theme"
     android:theme="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
     android:padding="16dp">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_title_icon_foreground"
-        android:background="@drawable/rounded_corner_searchview"
         android:backgroundTint="#F4F4F4"
-        android:gravity="bottom"
-        android:layout_marginTop="15dp"/>
+        android:src="@drawable/ic_go_fetch_complete_logo_whtbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="18dp"
-        android:layout_marginLeft="10dp"
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="Fetch"
-        android:textSize="40dp" />
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="classic_red">#cc4137</color>
+    <color name="prime_theme">#cc4137</color>
+    <color name="second_theme">#FFFFFF</color>
+    <color name="font_theme">#151515</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="ActionBarTitleLight">#FFFFFF</color>

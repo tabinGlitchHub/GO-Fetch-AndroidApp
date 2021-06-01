@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="160dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="175dp"
+        android:layout_height="160dp"
         android:layout_margin="2.5dp"
         android:elevation="10dp"
         app:cardCornerRadius="7dp">
@@ -15,19 +15,16 @@
         <RelativeLayout
             android:id="@+id/pkmnCard"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/card_gradient_bug">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/pkmnName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pkmnImage"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_below="@id/pkmnImage"
                 android:layout_toRightOf="@id/pkmnID"
                 android:text="Pikachu"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/font_theme"
                 android:textSize="12sp" />
 
             <TextView
@@ -35,75 +32,69 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pkmnImage"
-                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="5dp"
-                android:layout_toEndOf="@+id/tagSign"
                 android:text="25"
-                android:textColor="#E3E3E3"
+                android:textColor="@color/font_theme"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tagSign"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/pkmnImage"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:text="#"
-                android:textColor="#E3E3E3"
-                android:textSize="12sp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
 
 
-            <ImageView
-                android:id="@+id/pkmnBackG"
-                android:layout_width="130dp"
-                android:layout_height="175dp"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/ic_sample_bg_foreground" />
+                <ImageView
+                    android:id="@+id/type2Icon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:alpha="0.7"
+                    android:src="@mipmap/ic_sample_type1_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.58"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.59000003" />
 
+                <ImageView
+                    android:id="@+id/type1Icon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:alpha="0.7"
+                    android:src="@mipmap/ic_sample_type1_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.39"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.41000003" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/pkmnImage"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_centerInParent="true"
                 android:src="@drawable/ic_pokemon" />
 
             <ImageView
-                android:id="@+id/type1Icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/ic_sample_type1_foreground" />
-
-            <ImageView
-                android:id="@+id/type2Icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/type1Icon"
-                android:src="@mipmap/ic_sample_type1_foreground" />
-
-            <ImageView
                 android:id="@+id/formIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginTop="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_below="@id/pkmnImage"
+                android:layout_alignParentRight="true"
                 android:src="@mipmap/ic_sample_type1_foreground" />
 
             <Button
                 android:id="@+id/favoriteBTN"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginRight="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
                 android:background="@mipmap/ic_fav_pb_btn_deselected_foreground" />
 
         </RelativeLayout>

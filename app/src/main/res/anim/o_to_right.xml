@@ -5,7 +5,7 @@
 
     <translate
         android:fromYDelta="0%"
-        android:toXDelta="12%"
+        android:toXDelta="20%"
         android:duration = "2000"/>
 
     <scale

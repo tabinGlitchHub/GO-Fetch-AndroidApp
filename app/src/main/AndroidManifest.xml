@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_apk_logo_whtbg"
+        android:icon="@drawable/ic_go_fetch_complete_nowhtbg"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_apk_logo_whtbg_round"
+        android:roundIcon="@drawable/ic_go_fetch_complete_nowhtbg"
         android:supportsRtl="true"
         android:theme="@style/Theme.PoGoDex">
         <activity android:name=".Activities.LaunchActivity">

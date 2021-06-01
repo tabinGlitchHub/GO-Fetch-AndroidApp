@@ -3,8 +3,8 @@
 
     <style name="Theme.PoGoDex" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/classic_red</item>
-        <item name="colorPrimaryVariant">@color/classic_red</item>
+        <item name="colorPrimary">@color/prime_theme</item>
+        <item name="colorPrimaryVariant">@color/prime_theme</item>
         <item name="colorOnPrimary">@color/white</item>
 <!--        <item name="android:textColorPrimary">@color/white</item>-->
         <!-- Secondary brand color. -->

@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:text="Sort by"
-        android:textColor="@color/classic_red"
+        android:textColor="@color/prime_theme"
         android:textSize="20dp" />
 
     <RadioGroup
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:buttonTint="@color/classic_red"
+            android:buttonTint="@color/prime_theme"
             android:checked="true"
             android:layoutDirection="rtl"
             android:paddingRight="50dp"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:buttonTint="@color/classic_red"
+            android:buttonTint="@color/prime_theme"
             android:layoutDirection="rtl"
             android:paddingRight="75dp"
             android:text="Number(#ID)"

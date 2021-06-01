@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".Activities.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/parentRelaTop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:foreground="#00FFFFFF">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/prime_theme"
+            android:elevation="4dp"
+            android:layout_gravity="start">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/rounded_corner_searchview_night"
+                    app:iconifiedByDefault="false"
+                    app:queryHint="GO Fetch"
+                    app:searchIcon="@drawable/ic_search_white_24dp" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recViewListOfPkmn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                app:shimmer_auto_start="true">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="3">
+
+                    <include layout="@layout/item_preload" />
+                    <include layout="@layout/item_preload"/>
+                    <include layout="@layout/item_preload"/>
+                    <include layout="@layout/item_preload" />
+                    <include layout="@layout/item_preload"/>
+                    <include layout="@layout/item_preload"/>
+                    <include layout="@layout/item_preload" />
+                    <include layout="@layout/item_preload"/>
+                    <include layout="@layout/item_preload"/>
+                    <include layout="@layout/item_preload" />
+                    <include layout="@layout/item_preload"/>
+                    <include layout="@layout/item_preload"/>
+
+                </GridLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatParent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/second_theme"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_baseline_catching_pokemon_24"
+                app:backgroundTint="#252525"
+                app:maxImageSize="50dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatChild1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/floatParent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/second_theme"
+                android:src="@drawable/ic_baseline_sort_24"
+                android:visibility="invisible"
+                app:backgroundTint="#252525"
+                app:maxImageSize="35dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatChild2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/floatChild1"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/second_theme"
+                android:src="@drawable/ic_baseline_filter_alt_24"
+                android:visibility="invisible"
+                app:backgroundTint="#252525"
+                app:maxImageSize="35dp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navLay"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu" />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
